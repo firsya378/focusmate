@@ -1,11 +1,6 @@
 <?php
 // config/database.php
-session_start();
-
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'focusmate_db');
+require_once __DIR__ . '/config.php';
 
 class Database {
     private static $instance = null;
@@ -19,12 +14,12 @@ class Database {
                 DB_PASS,
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_EMULATE_PREPARES => false
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 ]
             );
         } catch(PDOException $e) {
-            die("Koneksi database gagal: " . $e->getMessage());
+            error_log("Database error: " . $e->getMessage());
+            die("Maaf, terjadi kesalahan sistem. Tim sedang memperbaiki.");
         }
     }
     
@@ -40,22 +35,18 @@ class Database {
     }
 }
 
-// Mendapatkan koneksi database
 function getDB() {
     return Database::getInstance()->getConnection();
 }
 
-// Cek apakah user sudah login
 function isLoggedIn() {
     return isset($_SESSION['user_id']);
 }
 
-// Cek apakah user adalah admin
 function isAdmin() {
     return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }
 
-// Redirect jika belum login
 function requireLogin() {
     if (!isLoggedIn()) {
         header('Location: login.php');
@@ -63,7 +54,6 @@ function requireLogin() {
     }
 }
 
-// Redirect jika bukan admin
 function requireAdmin() {
     requireLogin();
     if (!isAdmin()) {
@@ -71,4 +61,3 @@ function requireAdmin() {
         exit();
     }
 }
-?>
