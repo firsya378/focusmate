@@ -1,7 +1,8 @@
 <?php
 // includes/functions.php
-require_once __DIR__ . '/../config/database.php';
-
+require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/functions.php';
 // Mendapatkan data user berdasarkan ID
 function getUserById($user_id) {
     $db = getDB();
