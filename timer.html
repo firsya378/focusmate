@@ -9,14 +9,22 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { font-family: 'Inter', sans-serif; }
+        
+        body {
+            background: linear-gradient(135deg, #FFF5F0, #F0F7FF, #F0FFF4);
+            min-height: 100vh;
+        }
+        
         .gradient-text {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        
         .nav-link {
             transition: all 0.3s ease;
             position: relative;
+            color: #64748B;
         }
         .nav-link::after {
             content: '';
@@ -24,8 +32,9 @@
             bottom: -4px;
             left: 0;
             width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            height: 3px;
+            background: linear-gradient(90deg, #FF6B35, #FF6B6B);
+            border-radius: 2px;
             transition: width 0.3s ease;
         }
         .nav-link:hover::after,
@@ -33,62 +42,159 @@
             width: 100%;
         }
         .nav-link.active {
-            color: #6C63FF;
+            color: #FF6B35;
             font-weight: 600;
         }
-        .gradient-card {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+        
+        .gradient-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
         }
+        
+        .timer-container {
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
+            position: relative;
+            overflow: hidden;
+        }
+        .timer-container::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -30%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .timer-container::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -30%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
         .timer-display {
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 40px rgba(108, 99, 255, 0.3);
+            text-shadow: 0 0 60px rgba(255, 107, 53, 0.3);
+            font-weight: 900;
         }
+        
         .btn-timer {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .btn-timer:hover {
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
         .btn-timer:active {
             transform: scale(0.95);
         }
-        .pulse-ring {
-            animation: pulse-ring 2s infinite;
+        
+        .btn-timer-start {
+            background: white;
+            color: #FF6B35;
         }
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(108, 99, 255, 0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(108, 99, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(108, 99, 255, 0); }
+        .btn-timer-start:hover {
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.4);
         }
+        .btn-timer-pause {
+            background: #FFE66D;
+            color: #2D3436;
+        }
+        .btn-timer-reset {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+        .btn-timer-reset:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
         .progress-ring {
             transition: stroke-dashoffset 1s ease;
         }
+        
+        .tip-card {
+            transition: all 0.3s ease;
+            border: 1px solid #F1F5F9;
+            background: white;
+        }
+        .tip-card:hover {
+            border-color: rgba(255, 107, 53, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.08);
+        }
+        .tip-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tip-icon-orange { background: #FFF0E8; color: #FF6B35; }
+        .tip-icon-green { background: #E8F8F0; color: #4ECDC4; }
+        .tip-icon-purple { background: #F0EBFF; color: #6C5CE7; }
+        
+        .session-badge {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .floating-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: floatDot 20s infinite linear;
+        }
+        @keyframes floatDot {
+            0% { transform: translateY(100%) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100%) rotate(720deg); opacity: 0; }
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 min-h-screen">
-    <nav class="bg-white/80 backdrop-blur-xl shadow-sm fixed w-full top-0 z-50 border-b border-gray-100">
+<body>
+    <nav class="gradient-nav fixed w-full top-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-10">
                     <div class="flex items-center space-x-2">
-                        <div class="w-9 h-9 rounded-xl gradient-card flex items-center justify-center shadow-lg">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-r from-[#FF6B35] to-[#FF6B6B] flex items-center justify-center shadow-lg">
                             <i class="fas fa-brain text-white text-lg"></i>
                         </div>
                         <h1 class="text-2xl font-black gradient-text">FocusMate</h1>
                     </div>
                     <div class="hidden md:flex space-x-6">
-                        <a href="dashboard.html" class="nav-link text-gray-500 hover:text-gray-700">Beranda</a>
-                        <a href="tasks.html" class="nav-link text-gray-500 hover:text-gray-700">Tugas</a>
-                        <a href="timer.html" class="nav-link active text-gray-700">Timer</a>
-                        <a href="ai-buddy.html" class="nav-link text-gray-500 hover:text-gray-700">AI Buddy</a>
-                        <a href="admin/index.html" class="nav-link text-gray-500 hover:text-gray-700 hidden" id="adminLink">
-                            <i class="fas fa-shield-alt text-red-500 mr-1"></i>Admin
+                        <a href="dashboard.html" class="nav-link">Beranda</a>
+                        <a href="tasks.html" class="nav-link">Tugas</a>
+                        <a href="timer.html" class="nav-link active">Timer</a>
+                        <a href="ai-buddy.html" class="nav-link">AI Buddy</a>
+                        <a href="admin/index.html" class="nav-link hidden" id="adminLink">
+                            <i class="fas fa-shield-alt text-[#FF6B35] mr-1"></i>Admin
                         </a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-sm font-medium text-gray-700" id="userName">Halo, User</span>
-                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition">
+                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-[#FFF0E8] hover:text-[#FF6B35] transition">
                         <i class="fas fa-user-circle text-xl"></i>
                     </a>
                     <button onclick="logout()" class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition">
@@ -103,21 +209,29 @@
         <div class="max-w-3xl mx-auto">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold text-gray-800">⏱️ Timer Fokus Pomodoro</h2>
-                <p class="text-gray-500 mt-1">Fokus 25 menit, istirahat 5 menit. Mari mulai!</p>
+                <p class="text-gray-500 mt-1">Fokus 25 menit, istirahat 5 menit. Mari mulai! ✨</p>
             </div>
             
-            <div class="bg-gradient-to-br from-purple-600 via-indigo-600 to-indigo-700 rounded-3xl shadow-2xl p-10 text-white relative overflow-hidden">
-                <!-- Background decoration -->
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
-                <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-24 -mb-24"></div>
+            <div class="timer-container rounded-3xl shadow-2xl p-10 text-white relative">
+                <div class="floating-dots">
+                    <div class="dot" style="left:5%;animation-delay:0s;"></div>
+                    <div class="dot" style="left:15%;animation-delay:4s;"></div>
+                    <div class="dot" style="left:25%;animation-delay:8s;"></div>
+                    <div class="dot" style="left:35%;animation-delay:12s;"></div>
+                    <div class="dot" style="left:45%;animation-delay:16s;"></div>
+                    <div class="dot" style="left:55%;animation-delay:2s;"></div>
+                    <div class="dot" style="left:65%;animation-delay:6s;"></div>
+                    <div class="dot" style="left:75%;animation-delay:10s;"></div>
+                    <div class="dot" style="left:85%;animation-delay:14s;"></div>
+                    <div class="dot" style="left:95%;animation-delay:18s;"></div>
+                </div>
                 
                 <div class="relative z-10">
-                    <!-- Timer Display -->
                     <div class="text-center">
                         <div class="inline-block relative">
                             <svg class="w-72 h-72" viewBox="0 0 120 120">
-                                <circle class="text-white/20" stroke-width="6" fill="none" r="52" cx="60" cy="60"/>
-                                <circle id="timerCircle" class="text-white progress-ring" stroke-width="6" fill="none" r="52" cx="60" cy="60"
+                                <circle class="text-white/20" stroke-width="5" fill="none" r="52" cx="60" cy="60"/>
+                                <circle id="timerCircle" class="text-white progress-ring" stroke-width="5" fill="none" r="52" cx="60" cy="60"
                                         stroke="white" stroke-linecap="round"
                                         stroke-dasharray="326.726" stroke-dashoffset="0"/>
                             </svg>
@@ -127,24 +241,22 @@
                         </div>
                     </div>
                     
-                    <!-- Controls -->
                     <div class="flex justify-center gap-4 mt-8">
                         <button onclick="toggleTimer()" id="btnStart" 
-                                class="btn-timer bg-white text-purple-700 px-10 py-4 rounded-2xl font-bold text-xl shadow-lg hover:bg-gray-100 transition flex items-center gap-2">
+                                class="btn-timer btn-timer-start px-10 py-4 rounded-2xl font-bold text-xl shadow-lg flex items-center gap-2">
                             <i class="fas fa-play"></i> MULAI
                         </button>
                         <button onclick="resetTimer()" 
-                                class="btn-timer bg-purple-800/50 backdrop-blur text-white px-10 py-4 rounded-2xl font-bold text-xl shadow-lg hover:bg-purple-800/70 transition flex items-center gap-2">
+                                class="btn-timer btn-timer-reset px-10 py-4 rounded-2xl font-bold text-xl shadow-lg flex items-center gap-2">
                             <i class="fas fa-redo"></i> RESET
                         </button>
                     </div>
                     
-                    <!-- Session Info -->
-                    <div class="flex justify-center gap-6 mt-6 text-sm">
-                        <div class="bg-white/10 backdrop-blur px-4 py-2 rounded-full">
+                    <div class="flex justify-center gap-4 mt-6 text-sm">
+                        <div class="session-badge px-4 py-2 rounded-full">
                             <i class="fas fa-brain mr-1"></i> <span id="sessionCount">0</span> sesi
                         </div>
-                        <div class="bg-white/10 backdrop-blur px-4 py-2 rounded-full">
+                        <div class="session-badge px-4 py-2 rounded-full">
                             <i class="fas fa-clock mr-1"></i> <span id="totalTimeDisplay">0</span> menit
                         </div>
                     </div>
@@ -153,23 +265,23 @@
 
             <!-- Tips -->
             <div class="mt-8 grid md:grid-cols-3 gap-4">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center">
-                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-2">
-                        <i class="fas fa-bolt text-purple-600"></i>
+                <div class="tip-card rounded-xl p-4 text-center">
+                    <div class="tip-icon tip-icon-orange mx-auto mb-2">
+                        <i class="fas fa-bolt"></i>
                     </div>
                     <h4 class="font-semibold text-gray-700 text-sm">25 Menit Fokus</h4>
                     <p class="text-xs text-gray-400">Konsentrasi penuh tanpa gangguan</p>
                 </div>
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center">
-                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-2">
-                        <i class="fas fa-coffee text-emerald-600"></i>
+                <div class="tip-card rounded-xl p-4 text-center">
+                    <div class="tip-icon tip-icon-green mx-auto mb-2">
+                        <i class="fas fa-coffee"></i>
                     </div>
                     <h4 class="font-semibold text-gray-700 text-sm">5 Menit Istirahat</h4>
                     <p class="text-xs text-gray-400">Refresh pikiran sejenak</p>
                 </div>
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center">
-                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mx-auto mb-2">
-                        <i class="fas fa-star text-indigo-600"></i>
+                <div class="tip-card rounded-xl p-4 text-center">
+                    <div class="tip-icon tip-icon-purple mx-auto mb-2">
+                        <i class="fas fa-star"></i>
                     </div>
                     <h4 class="font-semibold text-gray-700 text-sm">4 Sesi = Istirahat Panjang</h4>
                     <p class="text-xs text-gray-400">15-30 menit istirahat total</p>
@@ -199,7 +311,6 @@
                 document.getElementById('adminLink').classList.remove('hidden');
             }
             
-            // Load stats
             const stats = getStudyStats(currentUserId);
             totalSessions = stats.total_sessions || 0;
             totalMinutes = stats.total_time || 0;
@@ -214,15 +325,13 @@
             if (!isRunning) {
                 isRunning = true;
                 btn.innerHTML = '<i class="fas fa-pause"></i> JEDA';
-                btn.classList.add('bg-yellow-400', 'text-white');
-                btn.classList.remove('bg-white', 'text-purple-700');
+                btn.className = 'btn-timer btn-timer-pause px-10 py-4 rounded-2xl font-bold text-xl shadow-lg flex items-center gap-2';
                 
                 const totalTime = 1500;
                 timer = setInterval(() => {
                     timeLeft--;
                     updateDisplay();
                     
-                    // Update progress circle
                     const progress = ((1500 - timeLeft) / 1500) * 326.726;
                     circle.style.strokeDashoffset = 326.726 - progress;
                     
@@ -230,14 +339,12 @@
                         clearInterval(timer);
                         isRunning = false;
                         btn.innerHTML = '<i class="fas fa-play"></i> MULAI';
-                        btn.classList.remove('bg-yellow-400', 'text-white');
-                        btn.classList.add('bg-white', 'text-purple-700');
+                        btn.className = 'btn-timer btn-timer-start px-10 py-4 rounded-2xl font-bold text-xl shadow-lg flex items-center gap-2';
                         circle.style.strokeDashoffset = 0;
                         
                         alert("🎉 Sesi Fokus Selesai! Waktunya istirahat sebentar.");
                         saveStudySession(currentUserId, 25, 'focus');
                         
-                        // Update stats
                         const stats = getStudyStats(currentUserId);
                         totalSessions = stats.total_sessions || 0;
                         totalMinutes = stats.total_time || 0;
@@ -250,8 +357,7 @@
             } else {
                 isRunning = false;
                 btn.innerHTML = '<i class="fas fa-play"></i> LANJUT';
-                btn.classList.remove('bg-yellow-400', 'text-white');
-                btn.classList.add('bg-white', 'text-purple-700');
+                btn.className = 'btn-timer btn-timer-start px-10 py-4 rounded-2xl font-bold text-xl shadow-lg flex items-center gap-2';
                 clearInterval(timer);
             }
         }
@@ -270,8 +376,7 @@
             
             const btn = document.getElementById('btnStart');
             btn.innerHTML = '<i class="fas fa-play"></i> MULAI';
-            btn.classList.remove('bg-yellow-400', 'text-white');
-            btn.classList.add('bg-white', 'text-purple-700');
+            btn.className = 'btn-timer btn-timer-start px-10 py-4 rounded-2xl font-bold text-xl shadow-lg flex items-center gap-2';
             
             const circle = document.getElementById('timerCircle');
             circle.style.strokeDashoffset = 326.726;
