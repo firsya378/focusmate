@@ -9,14 +9,22 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { font-family: 'Inter', sans-serif; }
+        
+        body {
+            background: linear-gradient(135deg, #FFF5F0, #F0F7FF, #F0FFF4);
+            min-height: 100vh;
+        }
+        
         .gradient-text {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        
         .nav-link {
             transition: all 0.3s ease;
             position: relative;
+            color: #64748B;
         }
         .nav-link::after {
             content: '';
@@ -24,8 +32,9 @@
             bottom: -4px;
             left: 0;
             width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            height: 3px;
+            background: linear-gradient(90deg, #FF6B35, #FF6B6B);
+            border-radius: 2px;
             transition: width 0.3s ease;
         }
         .nav-link:hover::after,
@@ -33,74 +42,129 @@
             width: 100%;
         }
         .nav-link.active {
-            color: #6C63FF;
+            color: #FF6B35;
             font-weight: 600;
         }
-        .gradient-card {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+        
+        .gradient-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
         }
+        
         .input-focus {
             transition: all 0.3s ease;
         }
         .input-focus:focus {
-            border-color: #6C63FF;
-            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12);
+            border-color: #FF6B35;
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.12);
             transform: translateY(-1px);
         }
+        
         .btn-primary {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(108, 99, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
         }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
         .task-card {
             transition: all 0.3s ease;
             border: 1px solid #F1F5F9;
+            border-radius: 12px;
+            background: white;
         }
         .task-card:hover {
-            border-color: rgba(108, 99, 255, 0.2);
-            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.08);
+            border-color: rgba(255, 107, 53, 0.2);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.08);
             transform: translateY(-2px);
         }
+        
         .badge-priority-high { background: #FEE2E2; color: #DC2626; }
         .badge-priority-medium { background: #FEF3C7; color: #D97706; }
         .badge-priority-low { background: #D1FAE5; color: #059669; }
         .badge-status-pending { background: #E0E7FF; color: #4F46E5; }
         .badge-status-completed { background: #D1FAE5; color: #059669; }
         .badge-status-cancelled { background: #FEE2E2; color: #DC2626; }
+        
         .modal-overlay {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(8px);
         }
+        
+        .form-card {
+            border: 1px solid rgba(255, 107, 53, 0.08);
+        }
+        .form-card:hover {
+            border-color: rgba(255, 107, 53, 0.2);
+        }
+        
+        .toast {
+            animation: slideUp 0.5s ease, fadeOut 0.5s ease 2.5s forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(20px); }
+        }
+        
+        .color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .color-dot-orange { background: #FF6B35; }
+        .color-dot-purple { background: #6C5CE7; }
+        .color-dot-green { background: #4ECDC4; }
+        .color-dot-yellow { background: #FFE66D; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 min-h-screen">
+<body>
     <!-- Navigasi -->
-    <nav class="bg-white/80 backdrop-blur-xl shadow-sm fixed w-full top-0 z-50 border-b border-gray-100">
+    <nav class="gradient-nav fixed w-full top-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-10">
                     <div class="flex items-center space-x-2">
-                        <div class="w-9 h-9 rounded-xl gradient-card flex items-center justify-center shadow-lg">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-r from-[#FF6B35] to-[#FF6B6B] flex items-center justify-center shadow-lg">
                             <i class="fas fa-brain text-white text-lg"></i>
                         </div>
                         <h1 class="text-2xl font-black gradient-text">FocusMate</h1>
                     </div>
                     <div class="hidden md:flex space-x-6">
-                        <a href="dashboard.html" class="nav-link text-gray-500 hover:text-gray-700">Beranda</a>
-                        <a href="tasks.html" class="nav-link active text-gray-700">Tugas</a>
-                        <a href="timer.html" class="nav-link text-gray-500 hover:text-gray-700">Timer</a>
-                        <a href="ai-buddy.html" class="nav-link text-gray-500 hover:text-gray-700">AI Buddy</a>
-                        <a href="admin/index.html" class="nav-link text-gray-500 hover:text-gray-700 hidden" id="adminLink">
-                            <i class="fas fa-shield-alt text-red-500 mr-1"></i>Admin
+                        <a href="dashboard.html" class="nav-link">Beranda</a>
+                        <a href="tasks.html" class="nav-link active">Tugas</a>
+                        <a href="timer.html" class="nav-link">Timer</a>
+                        <a href="ai-buddy.html" class="nav-link">AI Buddy</a>
+                        <a href="admin/index.html" class="nav-link hidden" id="adminLink">
+                            <i class="fas fa-shield-alt text-[#FF6B35] mr-1"></i>Admin
                         </a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-sm font-medium text-gray-700" id="userName">Halo, User</span>
-                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition">
+                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-[#FFF0E8] hover:text-[#FF6B35] transition">
                         <i class="fas fa-user-circle text-xl"></i>
                     </a>
                     <button onclick="logout()" class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition">
@@ -114,24 +178,27 @@
     <div class="container mx-auto px-6 pt-28 pb-12">
         <!-- Header -->
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-800">📋 Manajemen Tugas</h2>
+            <div class="flex items-center gap-3 flex-wrap">
+                <h2 class="text-3xl font-bold text-gray-800">📋 Manajemen Tugas</h2>
+                <span class="text-xs bg-[#FFF0E8] text-[#FF6B35] px-3 py-1 rounded-full font-semibold">#StayOrganized</span>
+            </div>
             <p class="text-gray-500 mt-1">Atur dan kelola semua tugas belajarmu di sini</p>
         </div>
 
         <!-- Form Tambah Tugas -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+        <div class="bg-white rounded-2xl shadow-sm p-6 mb-8 form-card">
             <h3 class="text-lg font-bold text-gray-800 mb-4">
-                <i class="fas fa-plus-circle text-purple-600 mr-2"></i>Tambah Tugas Baru
+                <span class="color-dot color-dot-orange mr-2"></span>Tambah Tugas Baru
             </h3>
             <form id="addTaskForm" class="space-y-4">
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
                         <input type="text" id="taskName" placeholder="Nama Tugas" required 
-                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                     </div>
                     <div>
-                        <select id="taskPriority" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
-                            <option value="Rendah">🔵 Prioritas Rendah</option>
+                        <select id="taskPriority" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
+                            <option value="Rendah">🟢 Prioritas Rendah</option>
                             <option value="Sedang" selected>🟡 Prioritas Sedang</option>
                             <option value="Tinggi">🔴 Prioritas Tinggi</option>
                         </select>
@@ -139,15 +206,15 @@
                 </div>
                 <div>
                     <textarea id="taskDescription" placeholder="Deskripsi tugas (opsional)" rows="2" 
-                              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition"></textarea>
+                              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50"></textarea>
                 </div>
                 <div class="grid md:grid-cols-3 gap-4">
                     <input type="date" id="taskDate" 
-                           class="px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                           class="px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                     <input type="time" id="startTime" placeholder="Mulai" 
-                           class="px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                           class="px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                     <input type="time" id="endTime" placeholder="Selesai" 
-                           class="px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                           class="px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                 </div>
                 <button type="submit" class="btn-primary text-white px-8 py-3 rounded-xl font-bold shadow-lg">
                     <i class="fas fa-save mr-2"></i>Simpan Tugas
@@ -156,17 +223,17 @@
         </div>
 
         <!-- Daftar Tugas -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
             <div class="flex items-center justify-between mb-5">
                 <h3 class="text-lg font-bold text-gray-800">
-                    <i class="fas fa-list text-purple-600 mr-2"></i>Daftar Tugas Saya
+                    <i class="fas fa-list text-[#FF6B35] mr-2"></i>Daftar Tugas Saya
                 </h3>
                 <span class="text-sm text-gray-500" id="taskCount">0 tugas</span>
             </div>
             <div id="taskList" class="space-y-3">
                 <div class="text-center py-12">
-                    <div class="w-20 h-20 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-clipboard-list text-4xl text-purple-400"></i>
+                    <div class="w-20 h-20 rounded-full bg-[#FFF0E8] flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-clipboard-list text-4xl text-[#FF6B35]"></i>
                     </div>
                     <p class="text-gray-500 font-medium">Belum ada tugas</p>
                     <p class="text-sm text-gray-400">Buat tugas pertama Anda di atas!</p>
@@ -180,7 +247,7 @@
         <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-xl font-bold text-gray-800">
-                    <i class="fas fa-edit text-purple-600 mr-2"></i>Edit Tugas
+                    <i class="fas fa-edit text-[#FF6B35] mr-2"></i>Edit Tugas
                 </h3>
                 <button onclick="closeEditModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center text-gray-500">
                     <i class="fas fa-times"></i>
@@ -201,7 +268,7 @@
                            class="px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
                 </div>
                 <select id="editPriority" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition mb-3">
-                    <option value="Rendah">🔵 Prioritas Rendah</option>
+                    <option value="Rendah">🟢 Prioritas Rendah</option>
                     <option value="Sedang">🟡 Prioritas Sedang</option>
                     <option value="Tinggi">🔴 Prioritas Tinggi</option>
                 </select>
@@ -253,7 +320,7 @@
             addTask(currentUserId, data);
             this.reset();
             renderTasks();
-            showToast('Tugas berhasil ditambahkan!', 'success');
+            showToast('✨ Tugas berhasil ditambahkan!', 'success');
         });
 
         document.getElementById('editTaskForm').addEventListener('submit', function(e) {
@@ -271,7 +338,7 @@
             updateTask(taskId, data);
             closeEditModal();
             renderTasks();
-            showToast('Tugas berhasil diperbarui!', 'success');
+            showToast('✅ Tugas berhasil diperbarui!', 'success');
         });
 
         function renderTasks() {
@@ -282,8 +349,8 @@
             if (tasks.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-12">
-                        <div class="w-20 h-20 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-clipboard-list text-4xl text-purple-400"></i>
+                        <div class="w-20 h-20 rounded-full bg-[#FFF0E8] flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-clipboard-list text-4xl text-[#FF6B35]"></i>
                         </div>
                         <p class="text-gray-500 font-medium">Belum ada tugas</p>
                         <p class="text-sm text-gray-400">Buat tugas pertama Anda di atas!</p>
@@ -299,14 +366,14 @@
                                      (task.priority === 'Sedang' ? 'badge-priority-medium' : 'badge-priority-low');
                 const statusBadge = task.status === 'pending' ? 'badge-status-pending' : 
                                    (task.status === 'completed' ? 'badge-status-completed' : 'badge-status-cancelled');
-                const statusText = task.status === 'pending' ? 'Tertunda' : 
-                                  (task.status === 'completed' ? 'Selesai' : 'Dibatalkan');
+                const statusText = task.status === 'pending' ? '⏳ Tertunda' : 
+                                  (task.status === 'completed' ? '✅ Selesai' : '❌ Dibatalkan');
                 
                 html += `
-                    <div class="task-card bg-slate-50 rounded-xl p-4">
+                    <div class="task-card p-4">
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
-                                <div class="flex items-center gap-3 mb-1">
+                                <div class="flex items-center gap-2 flex-wrap mb-1">
                                     <h3 class="font-semibold text-gray-800">${escapeHtml(task.task_name)}</h3>
                                     <span class="px-2 py-0.5 rounded-full text-xs font-semibold ${priorityBadge}">${task.priority}</span>
                                     <span class="px-2 py-0.5 rounded-full text-xs font-semibold ${statusBadge}">${statusText}</span>
@@ -318,10 +385,10 @@
                                 </div>
                             </div>
                             <div class="flex space-x-2 ml-4">
-                                <button onclick="editTask(${task.id})" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition flex items-center justify-center">
+                                <button onclick="editTask(${task.id})" class="w-8 h-8 rounded-lg bg-[#FFF0E8] text-[#FF6B35] hover:bg-[#FFE0D0] transition flex items-center justify-center">
                                     <i class="fas fa-edit text-sm"></i>
                                 </button>
-                                <button onclick="deleteTaskHandler(${task.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition flex items-center justify-center">
+                                <button onclick="deleteTaskHandler(${task.id})" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition flex items-center justify-center">
                                     <i class="fas fa-trash text-sm"></i>
                                 </button>
                             </div>
@@ -358,15 +425,15 @@
             if (confirm('Yakin ingin menghapus tugas ini?')) {
                 deleteTask(taskId, currentUserId);
                 renderTasks();
-                showToast('Tugas berhasil dihapus', 'info');
+                showToast('🗑️ Tugas berhasil dihapus', 'info');
             }
         }
 
         function showToast(message, type) {
             const colors = {
-                success: 'bg-emerald-500',
-                error: 'bg-red-500',
-                info: 'bg-blue-500'
+                success: 'bg-gradient-to-r from-emerald-500 to-emerald-600',
+                error: 'bg-gradient-to-r from-red-500 to-red-600',
+                info: 'bg-gradient-to-r from-blue-500 to-blue-600'
             };
             const icons = {
                 success: 'fa-check-circle',
@@ -374,14 +441,10 @@
                 info: 'fa-info-circle'
             };
             const toast = document.createElement('div');
-            toast.className = `fixed bottom-4 right-4 ${colors[type] || 'bg-gray-800'} text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 animate-bounce z-50`;
+            toast.className = `toast fixed bottom-4 right-4 ${colors[type] || 'bg-gray-800'} text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50`;
             toast.innerHTML = `<i class="fas ${icons[type] || 'fa-info-circle'}"></i> ${message}`;
             document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.5s';
-                setTimeout(() => toast.remove(), 500);
-            }, 3000);
+            setTimeout(() => toast.remove(), 3000);
         }
 
         function escapeHtml(text) {
