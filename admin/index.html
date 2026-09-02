@@ -9,37 +9,57 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { font-family: 'Inter', sans-serif; }
+        
+        body {
+            background: linear-gradient(135deg, #FFF5F0, #F0F7FF, #F0FFF4);
+            min-height: 100vh;
+        }
+        
         .gradient-text {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        
         .gradient-card {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
         }
+        
         .admin-card {
             transition: all 0.3s ease;
             border: 1px solid #F1F5F9;
+            background: white;
         }
         .admin-card:hover {
-            border-color: rgba(108, 99, 255, 0.2);
+            border-color: rgba(255, 107, 53, 0.15);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.08);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.08);
         }
+        
         .table-row {
             transition: all 0.2s ease;
         }
         .table-row:hover {
-            background: #F8FAFC;
+            background: #FFF5F0;
         }
+        
         .badge-role-admin {
-            background: #F3E8FF;
-            color: #7C3AED;
+            background: #F0EBFF;
+            color: #6C5CE7;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
         }
         .badge-role-user {
-            background: #E0E7FF;
-            color: #4F46E5;
+            background: #E8F0FF;
+            color: #4A90D9;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
         }
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -50,11 +70,18 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
+        
         .stat-item {
             background: white;
             border-radius: 1rem;
             padding: 1.25rem;
             border: 1px solid #F1F5F9;
+            transition: all 0.3s ease;
+        }
+        .stat-item:hover {
+            border-color: rgba(255, 107, 53, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.08);
         }
         .stat-item .icon {
             width: 2.5rem;
@@ -64,9 +91,36 @@
             align-items: center;
             justify-content: center;
         }
+        .icon-orange { background: #FFF0E8; color: #FF6B35; }
+        .icon-green { background: #E8F8F0; color: #4ECDC4; }
+        .icon-yellow { background: #FFF8E0; color: #D4A000; }
+        .icon-purple { background: #F0EBFF; color: #6C5CE7; }
+        
+        .table-header {
+            background: #F8FAFC;
+            font-weight: 600;
+            color: #64748B;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        
+        .select-role {
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .select-role:focus {
+            ring: 2px solid #FF6B35;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 min-h-screen">
+<body>
     <!-- Navbar -->
     <nav class="bg-white/80 backdrop-blur-xl shadow-sm fixed w-full top-0 z-50 border-b border-gray-100">
         <div class="container mx-auto px-6 py-4">
@@ -78,7 +132,7 @@
                     <h1 class="text-2xl font-black gradient-text">Panel Admin</h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="../dashboard.html" class="text-gray-500 hover:text-purple-600 transition text-sm font-medium">
+                    <a href="../dashboard.html" class="text-gray-500 hover:text-[#FF6B35] transition text-sm font-medium">
                         <i class="fas fa-arrow-left mr-1"></i>Kembali
                     </a>
                     <button onclick="logout()" class="text-red-500 hover:text-red-700 transition text-sm font-medium">
@@ -92,7 +146,10 @@
     <div class="container mx-auto px-6 pt-24 pb-12">
         <!-- Header -->
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-800">⚙️ Kelola Platform</h2>
+            <div class="flex items-center gap-3 flex-wrap">
+                <h2 class="text-3xl font-bold text-gray-800">⚙️ Kelola Platform</h2>
+                <span class="text-xs bg-[#FFF0E8] text-[#FF6B35] px-3 py-1 rounded-full font-semibold">#AdminMode</span>
+            </div>
             <p class="text-gray-500 mt-1">Atur pengguna dan pantau aktivitas di FocusMate</p>
         </div>
 
@@ -100,7 +157,7 @@
         <div class="stats-grid mb-8">
             <div class="stat-item">
                 <div class="flex items-center gap-3">
-                    <div class="icon bg-purple-100 text-purple-600">
+                    <div class="icon icon-orange">
                         <i class="fas fa-users"></i>
                     </div>
                     <div>
@@ -111,7 +168,7 @@
             </div>
             <div class="stat-item">
                 <div class="flex items-center gap-3">
-                    <div class="icon bg-emerald-100 text-emerald-600">
+                    <div class="icon icon-green">
                         <i class="fas fa-check-circle"></i>
                     </div>
                     <div>
@@ -122,23 +179,23 @@
             </div>
             <div class="stat-item">
                 <div class="flex items-center gap-3">
-                    <div class="icon bg-orange-100 text-orange-600">
+                    <div class="icon icon-yellow">
                         <i class="fas fa-clock"></i>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Tugas Aktif</p>
-                        <p class="text-2xl font-bold text-orange-600" id="activeTasks">0</p>
+                        <p class="text-2xl font-bold text-[#D4A000]" id="activeTasks">0</p>
                     </div>
                 </div>
             </div>
             <div class="stat-item">
                 <div class="flex items-center gap-3">
-                    <div class="icon bg-blue-100 text-blue-600">
+                    <div class="icon icon-purple">
                         <i class="fas fa-brain"></i>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Total Sesi</p>
-                        <p class="text-2xl font-bold text-blue-600" id="totalSessions">0</p>
+                        <p class="text-2xl font-bold text-[#6C5CE7]" id="totalSessions">0</p>
                     </div>
                 </div>
             </div>
@@ -148,23 +205,23 @@
         <div id="successMessage" class="hidden bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 px-4 py-3 rounded-xl mb-4"></div>
 
         <!-- Users Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8 admin-card">
+        <div class="admin-card rounded-2xl shadow-sm overflow-hidden mb-8">
             <div class="p-6 border-b border-gray-100 flex items-center justify-between">
                 <h3 class="text-lg font-bold text-gray-800">
-                    <i class="fas fa-users-cog text-purple-600 mr-2"></i>Kelola Pengguna
+                    <i class="fas fa-users-cog text-[#FF6B35] mr-2"></i>Kelola Pengguna
                 </h3>
                 <span class="text-sm text-gray-400" id="userCount">0 pengguna</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="bg-gray-50">
+                    <thead class="table-header">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Nama</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Email</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Role</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Aksi</th>
+                            <th class="px-6 py-3 text-left">ID</th>
+                            <th class="px-6 py-3 text-left">Nama</th>
+                            <th class="px-6 py-3 text-left">Email</th>
+                            <th class="px-6 py-3 text-left">Role</th>
+                            <th class="px-6 py-3 text-left">Status</th>
+                            <th class="px-6 py-3 text-left">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="userTableBody" class="divide-y divide-gray-100">
@@ -175,22 +232,22 @@
         </div>
 
         <!-- All Tasks -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden admin-card">
+        <div class="admin-card rounded-2xl shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-100 flex items-center justify-between">
                 <h3 class="text-lg font-bold text-gray-800">
-                    <i class="fas fa-tasks text-purple-600 mr-2"></i>Semua Tugas
+                    <i class="fas fa-tasks text-[#FF6B35] mr-2"></i>Semua Tugas
                 </h3>
                 <span class="text-sm text-gray-400" id="taskCount">0 tugas</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="bg-gray-50">
+                    <thead class="table-header">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Tugas</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Pengguna</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Prioritas</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Tanggal</th>
+                            <th class="px-6 py-3 text-left">Tugas</th>
+                            <th class="px-6 py-3 text-left">Pengguna</th>
+                            <th class="px-6 py-3 text-left">Prioritas</th>
+                            <th class="px-6 py-3 text-left">Status</th>
+                            <th class="px-6 py-3 text-left">Tanggal</th>
                         </tr>
                     </thead>
                     <tbody id="taskTableBody" class="divide-y divide-gray-100">
@@ -249,7 +306,7 @@
                         <td class="px-6 py-3 text-sm text-gray-500">${escapeHtml(user.email)}</td>
                         <td class="px-6 py-3">
                             <select onchange="updateRole(${user.id}, this.value)" 
-                                    class="px-3 py-1 border rounded-lg text-sm font-medium ${roleBadge} focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                                    class="select-role ${roleBadge}">
                                 <option value="user" ${user.role === 'user' ? 'selected' : ''}>👤 User</option>
                                 <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>⚙️ Admin</option>
                             </select>
@@ -305,15 +362,16 @@
 
         function updateRole(userId, role) {
             if (updateUserRole(userId, role)) {
-                showMessage('Role user berhasil diupdate ✅', 'success');
+                showMessage('✅ Role user berhasil diupdate', 'success');
                 renderUsers();
+                renderStats();
             }
         }
 
         function deleteUserHandler(userId) {
             if (confirm('Yakin ingin menghapus user ini?')) {
                 if (deleteUser(userId)) {
-                    showMessage('User berhasil dihapus ✅', 'success');
+                    showMessage('✅ User berhasil dihapus', 'success');
                     renderUsers();
                     renderStats();
                 } else {
