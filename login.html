@@ -9,67 +9,155 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { font-family: 'Inter', sans-serif; }
+        
+        body {
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7, #4ECDC4);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
         }
+        
         .gradient-text {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: shimmer 3s ease-in-out infinite;
         }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
         .input-focus {
             transition: all 0.3s ease;
         }
         .input-focus:focus {
-            border-color: #6C63FF;
-            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
+            border-color: #FF6B35;
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.15);
             transform: translateY(-1px);
         }
+        
         .btn-primary {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(108, 99, 255, 0.4);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
         }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
         .floating-shapes {
             position: fixed;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-            z-index: -1;
+            z-index: 0;
             overflow: hidden;
+            pointer-events: none;
         }
+        
         .shape {
             position: absolute;
             border-radius: 50%;
-            opacity: 0.1;
+            opacity: 0.2;
+            animation: float 20s ease-in-out infinite;
         }
-        .shape-1 { width: 400px; height: 400px; background: #6C63FF; top: -100px; right: -100px; }
-        .shape-2 { width: 300px; height: 300px; background: #4F46E5; bottom: -50px; left: -50px; }
-        .shape-3 { width: 200px; height: 200px; background: #10B981; top: 50%; left: 50%; }
+        .shape-1 { 
+            width: 400px; height: 400px; 
+            background: #FF6B35; 
+            top: -100px; right: -100px;
+            animation-delay: 0s;
+        }
+        .shape-2 { 
+            width: 300px; height: 300px; 
+            background: #6C5CE7; 
+            bottom: -50px; left: -50px;
+            animation-delay: -5s;
+        }
+        .shape-3 { 
+            width: 200px; height: 200px; 
+            background: #4ECDC4; 
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 30px) scale(1.02); }
+        }
+        
+        .brand-icon {
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .decorative-line {
+            height: 4px;
+            width: 60px;
+            background: linear-gradient(90deg, #FF6B35, #FF6B6B, #6C5CE7, #4ECDC4);
+            border-radius: 2px;
+            margin: 0 auto;
+        }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-emerald-50">
+<body>
     <div class="floating-shapes">
         <div class="shape shape-1"></div>
         <div class="shape shape-2"></div>
         <div class="shape shape-3"></div>
     </div>
 
-    <div class="container mx-auto px-4 py-12 relative z-10">
-        <div class="max-w-md mx-auto">
+    <div class="container mx-auto px-4 py-12 relative z-10 min-h-screen flex items-center justify-center">
+        <div class="max-w-md mx-auto w-full">
             <!-- Logo & Brand -->
             <div class="text-center mb-10">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-purple-600 to-indigo-600 shadow-2xl mb-5">
-                    <i class="fas fa-brain text-4xl text-white"></i>
+                <div class="brand-icon inline-flex items-center justify-center w-24 h-24 rounded-3xl shadow-2xl mb-5">
+                    <i class="fas fa-brain text-5xl text-white"></i>
                 </div>
-                <h1 class="text-4xl font-black gradient-text">FocusMate</h1>
-                <p class="text-gray-500 mt-2 font-medium">Fokus, Produktif, Berkembang</p>
+                <h1 class="text-5xl font-black gradient-text">FocusMate</h1>
+                <p class="text-white/90 mt-2 font-medium tracking-wide">✨ Fokus • Produktif • Berkembang</p>
+                <div class="decorative-line mt-4"></div>
             </div>
             
             <!-- Login Card -->
@@ -84,20 +172,20 @@
                 <form id="loginForm">
                     <div class="mb-5">
                         <label class="block text-gray-700 text-sm font-semibold mb-2">
-                            <i class="fas fa-envelope text-purple-500 mr-2"></i>Email
+                            <i class="fas fa-envelope text-[#FF6B35] mr-2"></i>Email
                         </label>
                         <input type="email" id="email" required 
                                placeholder="Masukkan email Anda"
-                               class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                               class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                     </div>
                     
                     <div class="mb-7">
                         <label class="block text-gray-700 text-sm font-semibold mb-2">
-                            <i class="fas fa-lock text-purple-500 mr-2"></i>Password
+                            <i class="fas fa-lock text-[#FF6B35] mr-2"></i>Password
                         </label>
                         <input type="password" id="password" required 
                                placeholder="Masukkan password"
-                               class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                               class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                     </div>
                     
                     <button type="submit" 
@@ -109,7 +197,7 @@
                 <div class="mt-6 text-center">
                     <p class="text-gray-500">
                         Belum punya akun? 
-                        <a href="register.html" class="text-purple-600 font-semibold hover:text-purple-700 transition">
+                        <a href="register.html" class="text-[#FF6B35] font-semibold hover:text-[#FF6B6B] transition">
                             Daftar Sekarang
                         </a>
                     </p>
