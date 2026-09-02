@@ -9,14 +9,22 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { font-family: 'Inter', sans-serif; }
+        
+        body {
+            background: linear-gradient(135deg, #FFF5F0, #F0F7FF, #F0FFF4);
+            min-height: 100vh;
+        }
+        
         .gradient-text {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        
         .nav-link {
             transition: all 0.3s ease;
             position: relative;
+            color: #64748B;
         }
         .nav-link::after {
             content: '';
@@ -24,8 +32,9 @@
             bottom: -4px;
             left: 0;
             width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            height: 3px;
+            background: linear-gradient(90deg, #FF6B35, #FF6B6B);
+            border-radius: 2px;
             transition: width 0.3s ease;
         }
         .nav-link:hover::after,
@@ -33,31 +42,55 @@
             width: 100%;
         }
         .nav-link.active {
-            color: #6C63FF;
+            color: #FF6B35;
             font-weight: 600;
         }
-        .gradient-card {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+        
+        .gradient-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
         }
+        
         .input-focus {
             transition: all 0.3s ease;
         }
         .input-focus:focus {
-            border-color: #6C63FF;
-            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12);
+            border-color: #FF6B35;
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.12);
             transform: translateY(-1px);
         }
+        
         .btn-primary {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(108, 99, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
         }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
         .profile-avatar {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
             position: relative;
+            width: 120px;
+            height: 120px;
         }
         .profile-avatar:hover .avatar-overlay {
             opacity: 1;
@@ -74,40 +107,70 @@
             transition: opacity 0.3s ease;
             cursor: pointer;
         }
+        
         .profile-card {
             border: 1px solid #F1F5F9;
             transition: all 0.3s ease;
+            background: white;
         }
         .profile-card:hover {
-            border-color: rgba(108, 99, 255, 0.2);
-            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.08);
+            border-color: rgba(255, 107, 53, 0.15);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.08);
+        }
+        
+        .status-badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-badge-admin { background: #F0EBFF; color: #6C5CE7; }
+        .status-badge-user { background: #E8F0FF; color: #4A90D9; }
+        
+        .color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .color-dot-orange { background: #FF6B35; }
+        .color-dot-purple { background: #6C5CE7; }
+        .color-dot-green { background: #4ECDC4; }
+        
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 min-h-screen">
-    <nav class="bg-white/80 backdrop-blur-xl shadow-sm fixed w-full top-0 z-50 border-b border-gray-100">
+<body>
+    <nav class="gradient-nav fixed w-full top-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-10">
                     <div class="flex items-center space-x-2">
-                        <div class="w-9 h-9 rounded-xl gradient-card flex items-center justify-center shadow-lg">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-r from-[#FF6B35] to-[#FF6B6B] flex items-center justify-center shadow-lg">
                             <i class="fas fa-brain text-white text-lg"></i>
                         </div>
                         <h1 class="text-2xl font-black gradient-text">FocusMate</h1>
                     </div>
                     <div class="hidden md:flex space-x-6">
-                        <a href="dashboard.html" class="nav-link text-gray-500 hover:text-gray-700">Beranda</a>
-                        <a href="tasks.html" class="nav-link text-gray-500 hover:text-gray-700">Tugas</a>
-                        <a href="timer.html" class="nav-link text-gray-500 hover:text-gray-700">Timer</a>
-                        <a href="ai-buddy.html" class="nav-link text-gray-500 hover:text-gray-700">AI Buddy</a>
-                        <a href="admin/index.html" class="nav-link text-gray-500 hover:text-gray-700 hidden" id="adminLink">
-                            <i class="fas fa-shield-alt text-red-500 mr-1"></i>Admin
+                        <a href="dashboard.html" class="nav-link">Beranda</a>
+                        <a href="tasks.html" class="nav-link">Tugas</a>
+                        <a href="timer.html" class="nav-link">Timer</a>
+                        <a href="ai-buddy.html" class="nav-link">AI Buddy</a>
+                        <a href="admin/index.html" class="nav-link hidden" id="adminLink">
+                            <i class="fas fa-shield-alt text-[#FF6B35] mr-1"></i>Admin
                         </a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-sm font-medium text-gray-700" id="userName">Halo, User</span>
-                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-[#FFF0E8] flex items-center justify-center text-[#FF6B35]">
                         <i class="fas fa-user-circle text-xl"></i>
                     </a>
                     <button onclick="logout()" class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition">
@@ -125,11 +188,11 @@
                 <p class="text-gray-500 mt-1">Kelola informasi akun Anda</p>
             </div>
             
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 profile-card">
+            <div class="profile-card rounded-2xl shadow-sm p-8">
                 <!-- Avatar -->
                 <div class="text-center mb-6">
                     <div class="relative inline-block">
-                        <div class="w-28 h-28 rounded-full profile-avatar flex items-center justify-center text-white text-5xl shadow-2xl">
+                        <div class="profile-avatar rounded-full flex items-center justify-center text-white text-5xl shadow-2xl">
                             <i class="fas fa-user-circle"></i>
                             <div class="avatar-overlay">
                                 <i class="fas fa-camera text-white text-xl"></i>
@@ -138,7 +201,7 @@
                     </div>
                     <h3 class="font-bold text-gray-800 mt-3 text-lg" id="profileName">User</h3>
                     <p class="text-sm text-gray-500" id="profileEmail">user@email.com</p>
-                    <span class="inline-block mt-1 px-3 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700" id="profileRole">User</span>
+                    <span class="inline-block mt-1 status-badge" id="profileRole">User</span>
                 </div>
                 
                 <div id="errorMessage" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-xl mb-4"></div>
@@ -146,49 +209,48 @@
                 
                 <form id="profileForm">
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">
-                            <i class="fas fa-user-circle text-purple-500 mr-2"></i>Nama Lengkap
+                        <label class="form-label">
+                            <span class="color-dot color-dot-orange"></span>Nama Lengkap
                         </label>
                         <input type="text" id="fullName" required 
-                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                     </div>
                     
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">
-                            <i class="fas fa-envelope text-purple-500 mr-2"></i>Email
+                        <label class="form-label">
+                            <span class="color-dot color-dot-purple"></span>Email
                         </label>
                         <input type="email" id="email" required 
-                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                     </div>
                     
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">
-                            <i class="fas fa-briefcase text-purple-500 mr-2"></i>Status
+                        <label class="form-label">
+                            <span class="color-dot color-dot-green"></span>Status
                         </label>
-                        <select id="status" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                        <select id="status" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                             <option value="Siswa">🎓 Siswa</option>
                             <option value="Mahasiswa" selected>📚 Mahasiswa</option>
                             <option value="Guru">👨‍🏫 Guru</option>
                             <option value="Dosen">👨‍🎓 Dosen</option>
                             <option value="Umum">👤 Umum</option>
-                            <option value="Admin">⚙️ Admin</option>
                         </select>
                     </div>
                     
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">
-                            <i class="fas fa-calendar text-purple-500 mr-2"></i>Tanggal Lahir
+                        <label class="form-label">
+                            <i class="fas fa-calendar text-[#FF6B35]"></i>Tanggal Lahir
                         </label>
                         <input type="date" id="birthDate" 
-                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                     </div>
                     
                     <div class="mb-6">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">
-                            <i class="fas fa-lock text-purple-500 mr-2"></i>Password Baru
+                        <label class="form-label">
+                            <i class="fas fa-lock text-[#FF6B35]"></i>Password Baru
                         </label>
                         <input type="password" id="newPassword" placeholder="Kosongkan jika tidak diubah"
-                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition bg-white/50">
                         <p class="text-xs text-gray-400 mt-1">Minimal 6 karakter</p>
                     </div>
                     
@@ -224,7 +286,14 @@
                 document.getElementById('birthDate').value = fullUser.birth_date || '';
                 document.getElementById('profileName').textContent = fullUser.full_name || user.full_name;
                 document.getElementById('profileEmail').textContent = fullUser.email || user.email;
-                document.getElementById('profileRole').textContent = fullUser.role === 'admin' ? 'Admin' : 'User';
+                const roleBadge = document.getElementById('profileRole');
+                if (fullUser.role === 'admin') {
+                    roleBadge.textContent = '⚙️ Admin';
+                    roleBadge.className = 'inline-block mt-1 status-badge status-badge-admin';
+                } else {
+                    roleBadge.textContent = '👤 User';
+                    roleBadge.className = 'inline-block mt-1 status-badge status-badge-user';
+                }
             }
         });
 
@@ -253,12 +322,11 @@
             }
             
             if (updateUserProfile(currentUser.user_id, data)) {
-                showMessage('Profil berhasil diperbarui! ✅', 'success');
+                showMessage('✅ Profil berhasil diperbarui!', 'success');
                 document.getElementById('userName').textContent = 'Halo, ' + data.full_name;
                 document.getElementById('profileName').textContent = data.full_name;
                 document.getElementById('profileEmail').textContent = data.email;
                 
-                // Update session
                 const session = getCurrentUser();
                 if (session) {
                     session.full_name = data.full_name;
