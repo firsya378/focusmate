@@ -6,88 +6,192 @@
     <title>Dashboard - FocusMate</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(108, 99, 255, 0.1);
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(108, 99, 255, 0.15);
+            border-color: rgba(108, 99, 255, 0.3);
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #6C63FF;
+            font-weight: 600;
+        }
+        .gradient-card {
+            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+        }
+        .task-item {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .task-item:hover {
+            border-color: rgba(108, 99, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.08);
+        }
+        .avatar-circle {
+            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+        }
+        .badge-priority-high { background: #FEE2E2; color: #DC2626; }
+        .badge-priority-medium { background: #FEF3C7; color: #D97706; }
+        .badge-priority-low { background: #D1FAE5; color: #059669; }
+    </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 min-h-screen">
     <!-- Navigasi -->
-    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+    <nav class="bg-white/80 backdrop-blur-xl shadow-sm fixed w-full top-0 z-50 border-b border-gray-100">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-8">
-                    <h1 class="text-2xl font-bold text-purple-600">
-                        <i class="fas fa-brain"></i> FocusMate
-                    </h1>
+                <div class="flex items-center space-x-10">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-9 h-9 rounded-xl gradient-card flex items-center justify-center shadow-lg">
+                            <i class="fas fa-brain text-white text-lg"></i>
+                        </div>
+                        <h1 class="text-2xl font-black gradient-text">FocusMate</h1>
+                    </div>
                     <div class="hidden md:flex space-x-6">
-                        <a href="dashboard.html" class="text-purple-600 font-semibold">Beranda</a>
-                        <a href="tasks.html" class="text-gray-700 hover:text-purple-600">Tugas</a>
-                        <a href="timer.html" class="text-gray-700 hover:text-purple-600">Timer</a>
-                        <a href="ai-buddy.html" class="text-gray-700 hover:text-purple-600">AI Buddy</a>
-                        <a href="admin/index.html" class="text-red-600 hover:text-red-700 hidden" id="adminLink">Panel Admin</a>
+                        <a href="dashboard.html" class="nav-link active text-gray-700">Beranda</a>
+                        <a href="tasks.html" class="nav-link text-gray-500 hover:text-gray-700">Tugas</a>
+                        <a href="timer.html" class="nav-link text-gray-500 hover:text-gray-700">Timer</a>
+                        <a href="ai-buddy.html" class="nav-link text-gray-500 hover:text-gray-700">AI Buddy</a>
+                        <a href="admin/index.html" class="nav-link text-gray-500 hover:text-gray-700 hidden" id="adminLink">
+                            <i class="fas fa-shield-alt text-red-500 mr-1"></i>Admin
+                        </a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="text-gray-700" id="userName">Halo, User</span>
-                    <a href="profile.html" class="text-gray-600 hover:text-purple-600">
-                        <i class="fas fa-user-circle text-2xl"></i>
+                    <span class="text-sm font-medium text-gray-700" id="userName">Halo, User</span>
+                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition">
+                        <i class="fas fa-user-circle text-xl"></i>
                     </a>
-                    <a href="#" onclick="logout()" class="text-red-600 hover:text-red-700">
+                    <button onclick="logout()" class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition">
                         <i class="fas fa-sign-out-alt"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Konten Utama -->
-    <div class="container mx-auto px-6 pt-24 pb-12">
-        <!-- Kartu Statistik -->
-        <div class="grid md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-xl shadow-md p-6">
+    <!-- Konten -->
+    <div class="container mx-auto px-6 pt-28 pb-12">
+        <!-- Welcome Section -->
+        <div class="mb-10">
+            <h2 class="text-3xl font-bold text-gray-800" id="welcomeText">Selamat Datang! 👋</h2>
+            <p class="text-gray-500 mt-1">Kelola tugas dan tingkatkan produktivitasmu hari ini</p>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="grid md:grid-cols-4 gap-6 mb-10">
+            <div class="stat-card bg-white rounded-2xl p-6 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-500 text-sm">Total Sesi Belajar</p>
-                        <p class="text-3xl font-bold text-purple-600" id="totalSessions">0</p>
+                        <p class="text-gray-500 text-sm font-medium">Total Sesi</p>
+                        <p class="text-3xl font-black text-gray-800 mt-1" id="totalSessions">0</p>
                     </div>
-                    <i class="fas fa-clock text-4xl text-purple-200"></i>
+                    <div class="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-purple-600">
+                        <i class="fas fa-clock text-2xl"></i>
+                    </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="stat-card bg-white rounded-2xl p-6 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-500 text-sm">Total Waktu Belajar</p>
-                        <p class="text-3xl font-bold text-purple-600" id="totalTime">0 jam</p>
+                        <p class="text-gray-500 text-sm font-medium">Waktu Belajar</p>
+                        <p class="text-3xl font-black text-gray-800 mt-1" id="totalTime">0 jam</p>
                     </div>
-                    <i class="fas fa-hourglass-half text-4xl text-purple-200"></i>
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                        <i class="fas fa-hourglass-half text-2xl"></i>
+                    </div>
                 </div>
             </div>
             
-            <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="stat-card bg-white rounded-2xl p-6 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-500 text-sm">Tugas Selesai</p>
-                        <p class="text-3xl font-bold text-green-600" id="completedTasks">0</p>
+                        <p class="text-gray-500 text-sm font-medium">Tugas Selesai</p>
+                        <p class="text-3xl font-black text-emerald-600 mt-1" id="completedTasks">0</p>
                     </div>
-                    <i class="fas fa-check-circle text-4xl text-green-200"></i>
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+                        <i class="fas fa-check-circle text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card bg-white rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium">Tugas Aktif</p>
+                        <p class="text-3xl font-black text-orange-600 mt-1" id="pendingTasks">0</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600">
+                        <i class="fas fa-tasks text-2xl"></i>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6">
+        <div class="grid md:grid-cols-3 gap-6">
             <!-- Tugas Tertunda -->
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-bold mb-4">Tugas Tertunda</h2>
-                <div id="pendingTasks">
-                    <p class="text-gray-500 text-center py-8">Tidak ada tugas tertunda. Bagus!</p>
+            <div class="md:col-span-2 bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="text-xl font-bold text-gray-800">
+                        <i class="fas fa-list-check text-purple-600 mr-2"></i>Tugas Tertunda
+                    </h2>
+                    <a href="tasks.html" class="text-sm text-purple-600 font-semibold hover:text-purple-700 transition">
+                        Lihat Semua <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
                 </div>
-                <a href="tasks.html" class="block text-center mt-4 text-purple-600 hover:underline">Lihat semua tugas →</a>
+                <div id="pendingTasksList">
+                    <div class="text-center py-8">
+                        <div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-check-circle text-3xl text-emerald-500"></i>
+                        </div>
+                        <p class="text-gray-500 font-medium">Tidak ada tugas tertunda</p>
+                        <p class="text-sm text-gray-400">Semua tugas sudah selesai! 🎉</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Timer Fokus -->
-            <div class="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl shadow-md p-6 text-white">
-                <h2 class="text-xl font-bold mb-4">Timer Fokus</h2>
-                <p class="mb-4">Mulai sesi belajar fokus dengan teknik Pomodoro</p>
-                <a href="timer.html" class="inline-block bg-white text-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
-                    Mulai Timer →
+            <!-- Quick Action / Timer -->
+            <div class="bg-gradient-to-br from-purple-600 via-indigo-600 to-indigo-700 rounded-2xl shadow-xl p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
+                        <i class="fas fa-hourglass-start text-2xl"></i>
+                    </div>
+                    <span class="text-xs bg-white/20 backdrop-blur px-3 py-1 rounded-full">Pomodoro</span>
+                </div>
+                <h2 class="text-2xl font-bold mb-2">Timer Fokus</h2>
+                <p class="text-white/80 text-sm mb-6">Mulai sesi belajar fokus dengan teknik Pomodoro</p>
+                <a href="timer.html" class="inline-flex items-center bg-white text-purple-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition shadow-lg">
+                    <i class="fas fa-play-circle mr-2"></i>Mulai Timer
                 </a>
             </div>
         </div>
@@ -102,49 +206,61 @@
                 return;
             }
             
-            // Tampilkan nama user
             document.getElementById('userName').textContent = 'Halo, ' + user.full_name;
+            document.getElementById('welcomeText').textContent = 'Selamat Datang, ' + user.full_name + '! 👋';
             
-            // Tampilkan link admin jika admin
             if (user.role === 'admin') {
                 document.getElementById('adminLink').classList.remove('hidden');
             }
             
-            // Load stats
+            // Stats
             const stats = getStudyStats(user.user_id);
             document.getElementById('totalSessions').textContent = stats.total_sessions || 0;
             document.getElementById('totalTime').textContent = Math.round((stats.total_time || 0) / 60) + ' jam';
             
-            // Load completed tasks
-            const tasks = getTasksByStatus(user.user_id, 'completed');
-            document.getElementById('completedTasks').textContent = tasks.length;
+            const completed = getTasksByStatus(user.user_id, 'completed');
+            document.getElementById('completedTasks').textContent = completed.length;
             
-            // Load pending tasks
             const pending = getTasksByStatus(user.user_id, 'pending');
-            const container = document.getElementById('pendingTasks');
+            document.getElementById('pendingTasks').textContent = pending.length;
+            
+            // Pending Tasks List
+            const container = document.getElementById('pendingTasksList');
             if (pending.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-8">Tidak ada tugas tertunda. Bagus!</p>';
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-check-circle text-3xl text-emerald-500"></i>
+                        </div>
+                        <p class="text-gray-500 font-medium">Tidak ada tugas tertunda</p>
+                        <p class="text-sm text-gray-400">Semua tugas sudah selesai! 🎉</p>
+                    </div>
+                `;
             } else {
                 let html = '<div class="space-y-3">';
                 pending.slice(0, 5).forEach(task => {
-                    const priorityColor = task.priority === 'Tinggi' ? 'bg-red-100 text-red-700' : 
-                                         (task.priority === 'Sedang' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700');
+                    const priorityBadge = task.priority === 'Tinggi' ? 'badge-priority-high' : 
+                                         (task.priority === 'Sedang' ? 'badge-priority-medium' : 'badge-priority-low');
                     html += `
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="task-item flex items-center justify-between p-4 bg-slate-50 rounded-xl">
                             <div>
-                                <h3 class="font-semibold">${escapeHtml(task.task_name)}</h3>
-                                <p class="text-sm text-gray-500">Tenggat: ${task.task_date || 'Tidak ada tanggal'}</p>
+                                <h3 class="font-semibold text-gray-800">${escapeHtml(task.task_name)}</h3>
+                                <p class="text-sm text-gray-500">${task.task_date || 'Tidak ada tanggal'}</p>
                             </div>
-                            <span class="px-2 py-1 text-xs rounded-full ${priorityColor}">${task.priority}</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${priorityBadge}">${task.priority}</span>
                         </div>
                     `;
                 });
+                if (pending.length > 5) {
+                    html += `<p class="text-sm text-gray-400 text-center">+${pending.length - 5} tugas lainnya</p>`;
+                }
                 html += '</div>';
                 container.innerHTML = html;
             }
         });
         
         function escapeHtml(text) {
+            if (!text) return '';
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
