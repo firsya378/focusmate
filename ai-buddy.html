@@ -9,14 +9,22 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { font-family: 'Inter', sans-serif; }
+        
+        body {
+            background: linear-gradient(135deg, #FFF5F0, #F0F7FF, #F0FFF4);
+            min-height: 100vh;
+        }
+        
         .gradient-text {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        
         .nav-link {
             transition: all 0.3s ease;
             position: relative;
+            color: #64748B;
         }
         .nav-link::after {
             content: '';
@@ -24,8 +32,9 @@
             bottom: -4px;
             left: 0;
             width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            height: 3px;
+            background: linear-gradient(90deg, #FF6B35, #FF6B6B);
+            border-radius: 2px;
             transition: width 0.3s ease;
         }
         .nav-link:hover::after,
@@ -33,12 +42,16 @@
             width: 100%;
         }
         .nav-link.active {
-            color: #6C63FF;
+            color: #FF6B35;
             font-weight: 600;
         }
-        .gradient-card {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+        
+        .gradient-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
         }
+        
         .chat-message {
             animation: slideIn 0.3s ease-out;
         }
@@ -46,6 +59,7 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
         .typing-indicator span {
             animation: blink 1.4s infinite both;
         }
@@ -56,70 +70,112 @@
             20% { opacity: 1; }
             100% { opacity: 0.1; }
         }
+        
         .user-message {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
         }
         .ai-message {
             background: white;
             border: 1px solid #F1F5F9;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
         }
+        
         .chat-input:focus {
-            border-color: #6C63FF;
-            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12);
+            border-color: #FF6B35;
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.12);
         }
+        
         .quick-btn {
             transition: all 0.3s ease;
+            border: 1px solid #F1F5F9;
+            background: white;
         }
         .quick-btn:hover {
-            background: #6C63FF;
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            border-color: transparent;
         }
+        
         .sidebar-card {
             transition: all 0.3s ease;
             border: 1px solid #F1F5F9;
+            background: white;
         }
         .sidebar-card:hover {
-            border-color: rgba(108, 99, 255, 0.2);
+            border-color: rgba(255, 107, 53, 0.15);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.08);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.08);
         }
+        
         .ai-avatar {
-            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            background: linear-gradient(135deg, #FF6B35, #FF6B6B, #6C5CE7);
         }
+        
         .message-time {
             font-size: 10px;
             color: #94A3B8;
-            margin-top: 4px;
+            margin-top: 2px;
         }
+        
+        .chat-container {
+            height: 520px;
+        }
+        .chat-messages-area {
+            height: calc(100% - 140px);
+        }
+        
+        .color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .color-dot-green { background: #4ECDC4; }
+        
+        .feature-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .feature-badge-orange { background: #FFF0E8; color: #FF6B35; }
+        .feature-badge-purple { background: #F0EBFF; color: #6C5CE7; }
+        .feature-badge-green { background: #E8F8F0; color: #4ECDC4; }
+        .feature-badge-yellow { background: #FFF8E0; color: #D4A000; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 min-h-screen">
+<body>
     <!-- Navigasi -->
-    <nav class="bg-white/80 backdrop-blur-xl shadow-sm fixed w-full top-0 z-50 border-b border-gray-100">
+    <nav class="gradient-nav fixed w-full top-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-10">
                     <div class="flex items-center space-x-2">
-                        <div class="w-9 h-9 rounded-xl gradient-card flex items-center justify-center shadow-lg">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-r from-[#FF6B35] to-[#FF6B6B] flex items-center justify-center shadow-lg">
                             <i class="fas fa-brain text-white text-lg"></i>
                         </div>
                         <h1 class="text-2xl font-black gradient-text">FocusMate</h1>
                     </div>
                     <div class="hidden md:flex space-x-6">
-                        <a href="dashboard.html" class="nav-link text-gray-500 hover:text-gray-700">Beranda</a>
-                        <a href="tasks.html" class="nav-link text-gray-500 hover:text-gray-700">Tugas</a>
-                        <a href="timer.html" class="nav-link text-gray-500 hover:text-gray-700">Timer</a>
-                        <a href="ai-buddy.html" class="nav-link active text-gray-700">AI Buddy</a>
-                        <a href="admin/index.html" class="nav-link text-gray-500 hover:text-gray-700 hidden" id="adminLink">
-                            <i class="fas fa-shield-alt text-red-500 mr-1"></i>Admin
+                        <a href="dashboard.html" class="nav-link">Beranda</a>
+                        <a href="tasks.html" class="nav-link">Tugas</a>
+                        <a href="timer.html" class="nav-link">Timer</a>
+                        <a href="ai-buddy.html" class="nav-link active">AI Buddy</a>
+                        <a href="admin/index.html" class="nav-link hidden" id="adminLink">
+                            <i class="fas fa-shield-alt text-[#FF6B35] mr-1"></i>Admin
                         </a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-sm font-medium text-gray-700" id="userName">Halo, User</span>
-                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition">
+                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-[#FFF0E8] hover:text-[#FF6B35] transition">
                         <i class="fas fa-user-circle text-xl"></i>
                     </a>
                     <button onclick="logout()" class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition">
@@ -132,75 +188,77 @@
 
     <div class="container mx-auto px-6 pt-28 pb-12">
         <div class="grid lg:grid-cols-4 gap-6">
-            <!-- Sidebar Informasi -->
+            <!-- Sidebar -->
             <div class="lg:col-span-1 space-y-4">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sidebar-card">
+                <div class="sidebar-card rounded-2xl p-5">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 rounded-2xl ai-avatar flex items-center justify-center text-white text-2xl shadow-lg">
                             <i class="fas fa-robot"></i>
                         </div>
                         <div>
                             <h3 class="font-bold text-gray-800 text-sm">AI Buddy</h3>
-                            <p class="text-xs text-gray-400">Online • 24/7</p>
+                            <p class="text-xs text-gray-400 flex items-center gap-1">
+                                <span class="color-dot color-dot-green"></span> Online • 24/7
+                            </p>
                         </div>
                     </div>
                     
                     <div class="space-y-3">
-                        <div class="p-3 bg-purple-50 rounded-xl border border-purple-100">
-                            <div class="flex items-center gap-2 text-purple-700 mb-1">
+                        <div class="p-3 bg-[#FFF0E8] rounded-xl border border-[#FFE0D0]">
+                            <div class="flex items-center gap-2 text-[#FF6B35] mb-1">
                                 <i class="fas fa-lightbulb text-xs"></i>
                                 <span class="font-bold text-xs">Tips Belajar</span>
                             </div>
                             <p class="text-xs text-gray-600 leading-relaxed">Gunakan teknik Pomodoro: 25 menit fokus, 5 menit istirahat!</p>
                         </div>
                         
-                        <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-100">
-                            <div class="flex items-center gap-2 text-emerald-700 mb-1">
+                        <div class="p-3 bg-[#E8F8F0] rounded-xl border border-[#D0F0E8]">
+                            <div class="flex items-center gap-2 text-[#4ECDC4] mb-1">
                                 <i class="fas fa-chart-line text-xs"></i>
                                 <span class="font-bold text-xs">Progress</span>
                             </div>
                             <div class="flex justify-between text-xs">
                                 <span>Sesi Belajar</span>
-                                <span class="font-bold text-emerald-600" id="sessionCount">0</span>
+                                <span class="font-bold text-[#4ECDC4]" id="sessionCount">0</span>
                             </div>
                         </div>
 
-                        <div class="p-3 bg-orange-50 rounded-xl border border-orange-100">
-                            <div class="flex items-center gap-2 text-orange-700 mb-1">
+                        <div class="p-3 bg-[#FFF8E0] rounded-xl border border-[#FFE8A0]">
+                            <div class="flex items-center gap-2 text-[#D4A000] mb-1">
                                 <i class="fas fa-tasks text-xs"></i>
                                 <span class="font-bold text-xs">Tugas Aktif</span>
                             </div>
-                            <p class="text-2xl font-bold text-orange-600" id="activeTasks">0</p>
+                            <p class="text-2xl font-bold text-[#D4A000]" id="activeTasks">0</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sidebar-card">
+                <div class="sidebar-card rounded-2xl p-4">
                     <h4 class="font-bold text-gray-700 text-xs mb-2">💡 Topik yang Bisa Ditanyakan</h4>
                     <div class="flex flex-wrap gap-1.5">
-                        <span class="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">Tips belajar</span>
-                        <span class="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">Motivasi</span>
-                        <span class="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">Matematika</span>
-                        <span class="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">Bahasa Inggris</span>
-                        <span class="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">Ujian</span>
-                        <span class="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">Prokrastinasi</span>
+                        <span class="feature-badge feature-badge-orange">Tips belajar</span>
+                        <span class="feature-badge feature-badge-purple">Motivasi</span>
+                        <span class="feature-badge feature-badge-green">Matematika</span>
+                        <span class="feature-badge feature-badge-orange">Bahasa Inggris</span>
+                        <span class="feature-badge feature-badge-yellow">Ujian</span>
+                        <span class="feature-badge feature-badge-purple">Prokrastinasi</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Area Chat -->
+            <!-- Chat Area -->
             <div class="lg:col-span-3">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden h-[600px] flex flex-col">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden chat-container flex flex-col">
                     <!-- Header Chat -->
-                    <div class="p-4 border-b border-gray-100 bg-gradient-to-r from-purple-50/50 to-white flex items-center justify-between">
+                    <div class="p-4 border-b border-gray-100 bg-gradient-to-r from-[#FFF5F0] to-white flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl ai-avatar flex items-center justify-center text-white shadow-md">
                                 <i class="fas fa-comment-dots"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-purple-700 text-sm">Asisten Belajar AI</h4>
+                                <h4 class="font-bold text-[#FF6B35] text-sm">Asisten Belajar AI</h4>
                                 <p class="text-xs text-gray-400 flex items-center gap-1">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                                    <span class="color-dot color-dot-green"></span>
                                     Online • Siap membantu
                                 </p>
                             </div>
@@ -211,19 +269,18 @@
                     </div>
 
                     <!-- Messages -->
-                    <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50/50">
-                        <!-- Welcome Message -->
+                    <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50/50 chat-messages-area">
                         <div class="flex gap-3 chat-message">
                             <div class="w-8 h-8 rounded-xl ai-avatar flex items-center justify-center text-white text-xs flex-shrink-0 shadow-md">
                                 <i class="fas fa-robot"></i>
                             </div>
-                            <div class="ai-message rounded-2xl rounded-tl-none p-3 max-w-[80%] shadow-sm">
-                                <p class="text-sm text-gray-700">Halo! 👋 Aku <span class="font-bold text-purple-600">AI Buddy</span>, asisten belajarmu.</p>
+                            <div class="ai-message rounded-2xl rounded-tl-none p-3 max-w-[80%]">
+                                <p class="text-sm text-gray-700">Halo! 👋 Aku <span class="font-bold text-[#FF6B35]">AI Buddy</span>, asisten belajarmu.</p>
                                 <p class="text-sm text-gray-600 mt-1">Ada yang bisa aku bantu? Tanyakan tentang:</p>
                                 <div class="flex flex-wrap gap-1.5 mt-2">
-                                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">📚 Tips belajar</span>
-                                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">🎯 Motivasi</span>
-                                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">📝 Persiapan ujian</span>
+                                    <span class="feature-badge feature-badge-orange text-xs">📚 Tips belajar</span>
+                                    <span class="feature-badge feature-badge-purple text-xs">🎯 Motivasi</span>
+                                    <span class="feature-badge feature-badge-green text-xs">📝 Persiapan ujian</span>
                                 </div>
                             </div>
                         </div>
@@ -235,21 +292,21 @@
                         <form id="chatForm" class="flex gap-3">
                             <div class="flex-1 relative">
                                 <input type="text" id="aiMessage" placeholder="Tanyakan sesuatu ke AI Buddy..." 
-                                       class="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl chat-input outline-none transition text-sm">
+                                       class="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl chat-input outline-none transition text-sm bg-white/50">
                                 <button type="button" onclick="quickQuestion('tips belajar')" 
-                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 transition text-xs">
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#FF6B35] transition text-xs">
                                     <i class="fas fa-lightbulb"></i>
                                 </button>
                             </div>
-                            <button type="submit" class="gradient-card text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition transform hover:scale-105">
+                            <button type="submit" class="bg-gradient-to-r from-[#FF6B35] to-[#FF6B6B] text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition transform hover:scale-105">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </form>
                         <div class="flex gap-2 mt-3 flex-wrap">
-                            <button onclick="quickQuestion('tips belajar efektif')" class="quick-btn text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full transition">Tips belajar</button>
-                            <button onclick="quickQuestion('cara mengatasi prokrastinasi')" class="quick-btn text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full transition">Atasi prokrastinasi</button>
-                            <button onclick="quickQuestion('motivasi belajar')" class="quick-btn text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full transition">Motivasi</button>
-                            <button onclick="quickQuestion('cara belajar matematika')" class="quick-btn text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full transition">Matematika</button>
+                            <button onclick="quickQuestion('tips belajar efektif')" class="quick-btn text-xs text-gray-600 px-3 py-1.5 rounded-full transition">📚 Tips belajar</button>
+                            <button onclick="quickQuestion('cara mengatasi prokrastinasi')" class="quick-btn text-xs text-gray-600 px-3 py-1.5 rounded-full transition">🎯 Atasi prokrastinasi</button>
+                            <button onclick="quickQuestion('motivasi belajar')" class="quick-btn text-xs text-gray-600 px-3 py-1.5 rounded-full transition">💪 Motivasi</button>
+                            <button onclick="quickQuestion('cara belajar matematika')" class="quick-btn text-xs text-gray-600 px-3 py-1.5 rounded-full transition">🧮 Matematika</button>
                         </div>
                     </div>
                 </div>
@@ -303,11 +360,11 @@
             
             if (sender === 'user') {
                 messageDiv.innerHTML = `
-                    <div class="user-message text-white p-3 rounded-2xl rounded-tr-none max-w-[80%] shadow-md">
+                    <div class="user-message p-3 rounded-2xl rounded-tr-none max-w-[80%] shadow-md">
                         <p class="text-sm">${escapeHtml(text)}</p>
                         <div class="message-time text-white/60 text-right">${new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</div>
                     </div>
-                    <div class="w-8 h-8 rounded-xl bg-purple-200 flex items-center justify-center text-purple-700 text-xs flex-shrink-0">
+                    <div class="w-8 h-8 rounded-xl bg-[#FFF0E8] flex items-center justify-center text-[#FF6B35] text-xs flex-shrink-0">
                         <i class="fas fa-user"></i>
                     </div>
                 `;
@@ -316,7 +373,7 @@
                     <div class="w-8 h-8 rounded-xl ai-avatar flex items-center justify-center text-white text-xs flex-shrink-0 shadow-md">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <div class="ai-message rounded-2xl rounded-tl-none p-3 max-w-[80%] shadow-sm">
+                    <div class="ai-message rounded-2xl rounded-tl-none p-3 max-w-[80%]">
                         <p class="text-sm text-gray-700 whitespace-pre-line">${nl2br(escapeHtml(text))}</p>
                         <div class="message-time">${new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</div>
                     </div>
@@ -337,9 +394,9 @@
                 </div>
                 <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100">
                     <div class="typing-indicator flex gap-1">
-                        <span class="w-2 h-2 bg-purple-600 rounded-full"></span>
-                        <span class="w-2 h-2 bg-purple-600 rounded-full"></span>
-                        <span class="w-2 h-2 bg-purple-600 rounded-full"></span>
+                        <span class="w-2 h-2 bg-[#FF6B35] rounded-full"></span>
+                        <span class="w-2 h-2 bg-[#FF6B6B] rounded-full"></span>
+                        <span class="w-2 h-2 bg-[#6C5CE7] rounded-full"></span>
                     </div>
                 </div>
             `;
@@ -361,11 +418,11 @@
             chats.reverse().forEach(chat => {
                 html += `
                     <div class="flex gap-3 chat-message justify-end">
-                        <div class="user-message text-white p-3 rounded-2xl rounded-tr-none max-w-[80%] shadow-md">
+                        <div class="user-message p-3 rounded-2xl rounded-tr-none max-w-[80%] shadow-md">
                             <p class="text-sm">${escapeHtml(chat.message)}</p>
                             <div class="message-time text-white/60 text-right">${new Date(chat.created_at).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</div>
                         </div>
-                        <div class="w-8 h-8 rounded-xl bg-purple-200 flex items-center justify-center text-purple-700 text-xs flex-shrink-0">
+                        <div class="w-8 h-8 rounded-xl bg-[#FFF0E8] flex items-center justify-center text-[#FF6B35] text-xs flex-shrink-0">
                             <i class="fas fa-user"></i>
                         </div>
                     </div>
@@ -373,7 +430,7 @@
                         <div class="w-8 h-8 rounded-xl ai-avatar flex items-center justify-center text-white text-xs flex-shrink-0 shadow-md">
                             <i class="fas fa-robot"></i>
                         </div>
-                        <div class="ai-message rounded-2xl rounded-tl-none p-3 max-w-[80%] shadow-sm">
+                        <div class="ai-message rounded-2xl rounded-tl-none p-3 max-w-[80%]">
                             <p class="text-sm text-gray-700 whitespace-pre-line">${nl2br(escapeHtml(chat.response))}</p>
                             <div class="message-time">${new Date(chat.created_at).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</div>
                         </div>
@@ -392,7 +449,7 @@
             if (confirm('Hapus semua riwayat chat?')) {
                 localStorage.setItem('focusmate_chats', JSON.stringify([]));
                 document.getElementById('chatHistory').innerHTML = '';
-                showToast('Riwayat chat berhasil dihapus', 'info');
+                showToast('🗑️ Riwayat chat berhasil dihapus', 'info');
             }
         }
 
@@ -405,9 +462,9 @@
 
         function showToast(message, type) {
             const colors = {
-                success: 'bg-emerald-500',
-                error: 'bg-red-500',
-                info: 'bg-blue-500'
+                success: 'bg-gradient-to-r from-emerald-500 to-emerald-600',
+                error: 'bg-gradient-to-r from-red-500 to-red-600',
+                info: 'bg-gradient-to-r from-blue-500 to-blue-600'
             };
             const icons = {
                 success: 'fa-check-circle',
@@ -415,7 +472,7 @@
                 info: 'fa-info-circle'
             };
             const toast = document.createElement('div');
-            toast.className = `fixed bottom-4 right-4 ${colors[type] || 'bg-gray-800'} text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 z-50 animate-bounce`;
+            toast.className = `fixed bottom-4 right-4 ${colors[type] || 'bg-gray-800'} text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50`;
             toast.innerHTML = `<i class="fas ${icons[type] || 'fa-info-circle'}"></i> ${message}`;
             document.body.appendChild(toast);
             setTimeout(() => {
