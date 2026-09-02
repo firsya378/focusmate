@@ -1,4 +1,4 @@
-// js/app.js - Core Functions
+// js/app.js - Core Functions (Updated)
 
 // ============ DATABASE (Local Storage) ============
 const DB = {
@@ -14,7 +14,6 @@ const DB = {
     },
     getUsers: function() {
         let users = this.get('focusmate_users');
-        // Seed admin jika belum ada
         if (users.length === 0) {
             users = [{
                 id: 1,
@@ -42,7 +41,6 @@ const DB = {
         return this.get('focusmate_chats');
     },
     hashPassword: function(password) {
-        // Simple hash (untuk demo, di real app pakai bcrypt)
         let hash = 0;
         for (let i = 0; i < password.length; i++) {
             const char = password.charCodeAt(i);
@@ -65,7 +63,6 @@ function loginUser(email, password) {
     const user = users.find(u => u.email === email && u.password === hashed);
     
     if (user) {
-        // Save session
         const session = {
             user_id: user.id,
             username: user.username,
@@ -160,7 +157,6 @@ function updateUserProfile(userId, data) {
     users[index] = { ...users[index], ...data };
     DB.set('focusmate_users', users);
     
-    // Update session jika sedang login
     const session = getCurrentUser();
     if (session && session.user_id === userId) {
         session.full_name = data.full_name || session.full_name;
@@ -294,28 +290,92 @@ function getChatHistory(userId) {
 function getAIResponse(message) {
     const msg = message.toLowerCase();
     
-    if (msg.includes('tips belajar') || msg.includes('cara belajar')) {
-        return "📚 Tips Belajar Efektif:\n\n1️⃣ Gunakan teknik Pomodoro (25 menit belajar, 5 menit istirahat)\n2️⃣ Buat catatan ringkas dengan mind mapping\n3️⃣ Ajarkan kembali ke orang lain\n4️⃣ Cari lingkungan yang nyaman dan minim gangguan\n5️⃣ Istirahat cukup dan jaga kesehatan";
+    const responses = {
+        'tips belajar|cara belajar|belajar efektif': `📚 **Tips Belajar Efektif**
+
+1️⃣ **Teknik Pomodoro** - 25 menit fokus, 5 menit istirahat
+2️⃣ **Mind Mapping** - Buat catatan visual yang terhubung
+3️⃣ **Teach Others** - Ajarkan materi ke orang lain
+4️⃣ **Lingkungan** - Cari tempat yang nyaman & minim gangguan
+5️⃣ **Istirahat** - Jaga kesehatan dengan tidur cukup
+
+✨ *Konsistensi lebih penting daripada intensitas!*`,
+
+        'prokrastinasi|malas|menunda': `🎯 **Cara Mengatasi Prokrastinasi**
+
+• Mulai dengan tugas kecil selama 2 menit (aturan 2 menit)
+• Buat deadline pribadi 2 hari lebih awal
+• Matikan notifikasi HP saat belajar
+• Beri reward kecil setelah selesai tugas
+• Ingat kembali tujuan jangka panjangmu
+
+💪 *Tindakan kecil hari ini = hasil besar esok hari!*`,
+
+        'motivasi|semangat|inspirasi': `💪 **Motivasi Hari Ini**
+
+*"Kesuksesan bukanlah akhir, kegagalan bukanlah hal yang fatal. Yang terpenting adalah keberanian untuk melanjutkan."*
+— Winston Churchill
+
+✨ *Setiap langkah kecil hari ini membawamu lebih dekat ke impianmu!*
+
+🚀 Yuk, mulai belajar sekarang juga!`,
+
+        'matematika|mtk|hitung': `🧮 **Tips Belajar Matematika**
+
+• Pahami konsep dasar, jangan hafalan rumus
+• Latihan soal secara rutin & bertahap
+• Gunakan visualisasi untuk masalah abstrak
+• Tonton video tutorial di YouTube
+• Bergabung dengan grup diskusi matematika
+
+📐 *Matematika adalah tentang pola, bukan tentang angka!*`,
+
+        'bahasa inggris|english|inggris': `🇬🇧 **Tips Belajar Bahasa Inggris**
+
+• Tonton film dengan subtitle English
+• Dengarkan podcast bahasa Inggris
+• Praktik speaking dengan teman/ rekaman
+• Baca artikel atau buku bahasa Inggris
+• Gunakan aplikasi Duolingo daily
+
+🗣️ *Practice makes perfect! Don't be afraid to make mistakes.*`,
+
+        'ujian|try out|exams': `📝 **Persiapan Menghadapi Ujian**
+
+• Buat jadwal belajar terstruktur
+• Fokus pada materi yang sulit terlebih dahulu
+• Latihan soal tahun sebelumnya
+• Istirahat cukup sebelum ujian
+• Datang lebih awal & bawa perlengkapan lengkap
+
+🎯 *Persiapan yang baik = hasil yang maksimal!*`,
+
+        'hai|halo|hi|hello|pagi|siang|malam': `Halo! 👋 Ada yang bisa aku bantu tentang belajar atau tugasmu hari ini?
+
+💡 Coba tanyakan:
+• Tips belajar efektif
+• Cara mengatasi prokrastinasi
+• Motivasi belajar
+• Tips matematika atau bahasa Inggris
+• Persiapan ujian`
+    };
+
+    for (const [pattern, response] of Object.entries(responses)) {
+        const keywords = pattern.split('|');
+        if (keywords.some(k => msg.includes(k))) {
+            return response;
+        }
     }
-    else if (msg.includes('prokrastinasi') || msg.includes('malas')) {
-        return "🎯 Cara Mengatasi Prokrastinasi:\n\n• Mulai dengan tugas kecil selama 2 menit\n• Buat deadline pribadi lebih awal\n• Matikan notifikasi HP saat belajar\n• Beri reward setelah menyelesaikan tugas\n• Ingat tujuan jangka panjangmu!";
-    }
-    else if (msg.includes('motivasi')) {
-        return "💪 Motivasi Hari Ini:\n\n\"Kesuksesan bukanlah akhir, kegagalan bukanlah hal yang fatal. Yang terpenting adalah keberanian untuk melanjutkan.\" - Winston Churchill\n\nYuk, mulai belajar! Setiap langkah kecil hari ini akan membawamu lebih dekat ke impianmu! ✨";
-    }
-    else if (msg.includes('matematika') || msg.includes('mtk')) {
-        return "🧮 Tips Belajar Matematika:\n\n• Pahami konsep dasar, jangan hanya menghafal rumus\n• Latihan soal secara rutin\n• Gunakan aplikasi seperti Photomath untuk bantuan\n• Tonton video tutorial di YouTube\n• Bergabung dengan grup diskusi matematika";
-    }
-    else if (msg.includes('bahasa inggris') || msg.includes('english')) {
-        return "🇬🇧 Tips Belajar Bahasa Inggris:\n\n• Tonton film dengan subtitle English\n• Dengarkan podcast bahasa Inggris\n• Praktik speaking dengan teman\n• Baca artikel atau buku bahasa Inggris\n• Gunakan aplikasi Duolingo untuk latihan daily";
-    }
-    else if (msg.includes('ujian') || msg.includes('try out')) {
-        return "📝 Persiapan Menghadapi Ujian:\n\n• Buat jadwal belajar terstruktur\n• Fokus pada materi yang sulit terlebih dahulu\n• Latihan soal tahun sebelumnya\n• Istirahat cukup sebelum ujian\n• Datang lebih awal dan bawa perlengkapan lengkap";
-    }
-    else if (msg.includes('hai') || msg.includes('halo') || msg.includes('hi') || msg.includes('hello')) {
-        return "Halo! 👋 Ada yang bisa aku bantu tentang belajar atau tugasmu hari ini?";
-    }
-    else {
-        return "Maaf, aku masih belajar untuk menjawab pertanyaan itu. Coba tanya tentang:\n\n• Tips belajar\n• Cara mengatasi prokrastinasi\n• Motivasi belajar\n• Tips matematika\n• Tips bahasa Inggris\n• Persiapan ujian";
-    }
+
+    return `🤔 **Maaf, aku masih belajar untuk menjawab pertanyaan itu.**
+
+💡 Coba tanyakan tentang:
+• Tips belajar efektif
+• Cara mengatasi prokrastinasi
+• Motivasi belajar
+• Tips matematika
+• Tips bahasa Inggris
+• Persiapan ujian
+
+✨ *Semakin spesifik pertanyaanmu, semakin baik jawabanku!*`;
 }
