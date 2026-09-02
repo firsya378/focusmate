@@ -6,87 +6,194 @@
     <title>Profil Saya - FocusMate</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #6C63FF;
+            font-weight: 600;
+        }
+        .gradient-card {
+            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+        }
+        .input-focus {
+            transition: all 0.3s ease;
+        }
+        .input-focus:focus {
+            border-color: #6C63FF;
+            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12);
+            transform: translateY(-1px);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(108, 99, 255, 0.3);
+        }
+        .profile-avatar {
+            background: linear-gradient(135deg, #6C63FF, #4F46E5);
+            position: relative;
+        }
+        .profile-avatar:hover .avatar-overlay {
+            opacity: 1;
+        }
+        .avatar-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+        .profile-card {
+            border: 1px solid #F1F5F9;
+            transition: all 0.3s ease;
+        }
+        .profile-card:hover {
+            border-color: rgba(108, 99, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.08);
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
-    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+<body class="bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 min-h-screen">
+    <nav class="bg-white/80 backdrop-blur-xl shadow-sm fixed w-full top-0 z-50 border-b border-gray-100">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-8">
-                    <h1 class="text-2xl font-bold text-purple-600">
-                        <i class="fas fa-brain"></i> FocusMate
-                    </h1>
+                <div class="flex items-center space-x-10">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-9 h-9 rounded-xl gradient-card flex items-center justify-center shadow-lg">
+                            <i class="fas fa-brain text-white text-lg"></i>
+                        </div>
+                        <h1 class="text-2xl font-black gradient-text">FocusMate</h1>
+                    </div>
                     <div class="hidden md:flex space-x-6">
-                        <a href="dashboard.html" class="text-gray-700 hover:text-purple-600">Beranda</a>
-                        <a href="tasks.html" class="text-gray-700 hover:text-purple-600">Tugas</a>
-                        <a href="timer.html" class="text-gray-700 hover:text-purple-600">Timer</a>
-                        <a href="ai-buddy.html" class="text-gray-700 hover:text-purple-600">AI Buddy</a>
-                        <a href="admin/index.html" class="text-red-600 hover:text-red-700 hidden" id="adminLink">Panel Admin</a>
+                        <a href="dashboard.html" class="nav-link text-gray-500 hover:text-gray-700">Beranda</a>
+                        <a href="tasks.html" class="nav-link text-gray-500 hover:text-gray-700">Tugas</a>
+                        <a href="timer.html" class="nav-link text-gray-500 hover:text-gray-700">Timer</a>
+                        <a href="ai-buddy.html" class="nav-link text-gray-500 hover:text-gray-700">AI Buddy</a>
+                        <a href="admin/index.html" class="nav-link text-gray-500 hover:text-gray-700 hidden" id="adminLink">
+                            <i class="fas fa-shield-alt text-red-500 mr-1"></i>Admin
+                        </a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="text-gray-700" id="userName">Halo, User</span>
-                    <a href="profile.html" class="text-gray-600 hover:text-purple-600">
-                        <i class="fas fa-user-circle text-2xl"></i>
+                    <span class="text-sm font-medium text-gray-700" id="userName">Halo, User</span>
+                    <a href="profile.html" class="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+                        <i class="fas fa-user-circle text-xl"></i>
                     </a>
-                    <a href="#" onclick="logout()" class="text-red-600 hover:text-red-700">
+                    <button onclick="logout()" class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition">
                         <i class="fas fa-sign-out-alt"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto px-6 pt-24 pb-12">
+    <div class="container mx-auto px-6 pt-28 pb-12">
         <div class="max-w-2xl mx-auto">
-            <div class="bg-white rounded-2xl shadow-xl p-8">
-                <div class="text-center mb-8">
-                    <div class="w-24 h-24 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-user-circle text-5xl text-purple-600"></i>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">👤 Profil Saya</h2>
+                <p class="text-gray-500 mt-1">Kelola informasi akun Anda</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 profile-card">
+                <!-- Avatar -->
+                <div class="text-center mb-6">
+                    <div class="relative inline-block">
+                        <div class="w-28 h-28 rounded-full profile-avatar flex items-center justify-center text-white text-5xl shadow-2xl">
+                            <i class="fas fa-user-circle"></i>
+                            <div class="avatar-overlay">
+                                <i class="fas fa-camera text-white text-xl"></i>
+                            </div>
+                        </div>
                     </div>
-                    <h2 class="text-2xl font-bold">Edit Profil</h2>
+                    <h3 class="font-bold text-gray-800 mt-3 text-lg" id="profileName">User</h3>
+                    <p class="text-sm text-gray-500" id="profileEmail">user@email.com</p>
+                    <span class="inline-block mt-1 px-3 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700" id="profileRole">User</span>
                 </div>
                 
-                <div id="errorMessage" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"></div>
-                <div id="successMessage" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"></div>
+                <div id="errorMessage" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-xl mb-4"></div>
+                <div id="successMessage" class="hidden bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 px-4 py-3 rounded-xl mb-4"></div>
                 
                 <form id="profileForm">
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama Lengkap</label>
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">
+                            <i class="fas fa-user-circle text-purple-500 mr-2"></i>Nama Lengkap
+                        </label>
                         <input type="text" id="fullName" required 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
                     </div>
                     
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">
+                            <i class="fas fa-envelope text-purple-500 mr-2"></i>Email
+                        </label>
                         <input type="email" id="email" required 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
                     </div>
                     
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Status</label>
-                        <select id="status" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
-                            <option value="Siswa">Siswa</option>
-                            <option value="Mahasiswa" selected>Mahasiswa</option>
-                            <option value="Guru">Guru</option>
-                            <option value="Dosen">Dosen</option>
-                            <option value="Umum">Umum</option>
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">
+                            <i class="fas fa-briefcase text-purple-500 mr-2"></i>Status
+                        </label>
+                        <select id="status" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                            <option value="Siswa">🎓 Siswa</option>
+                            <option value="Mahasiswa" selected>📚 Mahasiswa</option>
+                            <option value="Guru">👨‍🏫 Guru</option>
+                            <option value="Dosen">👨‍🎓 Dosen</option>
+                            <option value="Umum">👤 Umum</option>
+                            <option value="Admin">⚙️ Admin</option>
                         </select>
                     </div>
                     
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Tanggal Lahir</label>
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">
+                            <i class="fas fa-calendar text-purple-500 mr-2"></i>Tanggal Lahir
+                        </label>
                         <input type="date" id="birthDate" 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
                     </div>
                     
                     <div class="mb-6">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Password Baru (kosongkan jika tidak diubah)</label>
-                        <input type="password" id="newPassword" 
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                        <label class="block text-gray-700 text-sm font-semibold mb-2">
+                            <i class="fas fa-lock text-purple-500 mr-2"></i>Password Baru
+                        </label>
+                        <input type="password" id="newPassword" placeholder="Kosongkan jika tidak diubah"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus outline-none transition">
+                        <p class="text-xs text-gray-400 mt-1">Minimal 6 karakter</p>
                     </div>
                     
-                    <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-bold hover:bg-purple-700 transition">
-                        Simpan Perubahan
+                    <button type="submit" class="btn-primary w-full text-white py-3.5 rounded-xl font-bold text-lg shadow-lg">
+                        <i class="fas fa-save mr-2"></i>Simpan Perubahan
                     </button>
                 </form>
             </div>
@@ -109,13 +216,15 @@
                 document.getElementById('adminLink').classList.remove('hidden');
             }
             
-            // Load profile data
             const fullUser = getUserById(user.user_id);
             if (fullUser) {
                 document.getElementById('fullName').value = fullUser.full_name || '';
                 document.getElementById('email').value = fullUser.email || '';
                 document.getElementById('status').value = fullUser.status || 'Mahasiswa';
                 document.getElementById('birthDate').value = fullUser.birth_date || '';
+                document.getElementById('profileName').textContent = fullUser.full_name || user.full_name;
+                document.getElementById('profileEmail').textContent = fullUser.email || user.email;
+                document.getElementById('profileRole').textContent = fullUser.role === 'admin' ? 'Admin' : 'User';
             }
         });
 
@@ -131,7 +240,10 @@
             
             const password = document.getElementById('newPassword').value;
             if (password) {
-                // Update password di users array
+                if (password.length < 6) {
+                    showMessage('Password minimal 6 karakter', 'error');
+                    return;
+                }
                 const users = DB.getUsers();
                 const index = users.findIndex(u => u.id === currentUser.user_id);
                 if (index !== -1) {
@@ -141,16 +253,41 @@
             }
             
             if (updateUserProfile(currentUser.user_id, data)) {
-                document.getElementById('successMessage').textContent = 'Profil berhasil diperbarui!';
-                document.getElementById('successMessage').classList.remove('hidden');
-                document.getElementById('errorMessage').classList.add('hidden');
+                showMessage('Profil berhasil diperbarui! ✅', 'success');
                 document.getElementById('userName').textContent = 'Halo, ' + data.full_name;
+                document.getElementById('profileName').textContent = data.full_name;
+                document.getElementById('profileEmail').textContent = data.email;
+                
+                // Update session
+                const session = getCurrentUser();
+                if (session) {
+                    session.full_name = data.full_name;
+                    localStorage.setItem('focusmate_session', JSON.stringify(session));
+                }
             } else {
-                document.getElementById('errorMessage').textContent = 'Gagal memperbarui profil';
-                document.getElementById('errorMessage').classList.remove('hidden');
-                document.getElementById('successMessage').classList.add('hidden');
+                showMessage('Gagal memperbarui profil', 'error');
             }
         });
+
+        function showMessage(text, type) {
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            errorDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+            
+            if (type === 'error') {
+                errorDiv.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i>' + text;
+                errorDiv.classList.remove('hidden');
+            } else {
+                successDiv.innerHTML = '<i class="fas fa-check-circle mr-2"></i>' + text;
+                successDiv.classList.remove('hidden');
+            }
+            
+            setTimeout(() => {
+                errorDiv.classList.add('hidden');
+                successDiv.classList.add('hidden');
+            }, 4000);
+        }
     </script>
 </body>
 </html>
