@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Tugas - FocusMate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-8">
+                    <h1 class="text-2xl font-bold text-purple-600">
+                        <i class="fas fa-brain"></i> FocusMate
+                    </h1>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="dashboard.html" class="text-gray-700 hover:text-purple-600">Beranda</a>
+                        <a href="tasks.html" class="text-purple-600 font-semibold">Tugas</a>
+                        <a href="timer.html" class="text-gray-700 hover:text-purple-600">Timer</a>
+                        <a href="ai-buddy.html" class="text-gray-700 hover:text-purple-600">AI Buddy</a>
+                        <a href="admin/index.html" class="text-red-600 hover:text-red-700 hidden" id="adminLink">Panel Admin</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-700" id="userName">Halo, User</span>
+                    <a href="profile.html" class="text-gray-600 hover:text-purple-600">
+                        <i class="fas fa-user-circle text-2xl"></i>
+                    </a>
+                    <a href="#" onclick="logout()" class="text-red-600 hover:text-red-700">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 pt-24 pb-12">
+        <!-- Form Tambah Tugas -->
+        <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6">Tambah Tugas Baru</h2>
+            <form id="addTaskForm" class="space-y-4">
+                <input type="text" id="taskName" placeholder="Nama Tugas" required 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                <textarea id="taskDescription" placeholder="Deskripsi" rows="3" 
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"></textarea>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <input type="date" id="taskDate" 
+                           class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    <input type="time" id="startTime" 
+                           class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    <input type="time" id="endTime" 
+                           class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    <select id="taskPriority" class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                        <option value="Rendah">Prioritas: Rendah</option>
+                        <option value="Sedang" selected>Prioritas: Sedang</option>
+                        <option value="Tinggi">Prioritas: Tinggi</option>
+                    </select>
+                </div>
+                <button type="submit" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                    Simpan Tugas
+                </button>
+            </form>
+        </div>
+
+        <!-- Daftar Tugas -->
+        <div class="bg-white rounded-xl shadow-md p-8">
+            <h2 class="text-2xl font-bold mb-6">Daftar Tugas Saya</h2>
+            <div id="taskList" class="space-y-4">
+                <p class="text-gray-500 text-center py-8">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Tugas -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-xl font-bold mb-4">Edit Tugas</h3>
+            <form id="editTaskForm">
+                <input type="hidden" id="editTaskId">
+                <input type="text" id="editTaskName" required 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-3">
+                <textarea id="editTaskDescription" rows="3" 
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-3"></textarea>
+                <input type="date" id="editTaskDate" 
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-3">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <input type="time" id="editStartTime" 
+                           class="px-4 py-3 border border-gray-300 rounded-lg">
+                    <input type="time" id="editEndTime" 
+                           class="px-4 py-3 border border-gray-300 rounded-lg">
+                </div>
+                <select id="editPriority" class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-3">
+                    <option value="Rendah">Prioritas: Rendah</option>
+                    <option value="Sedang">Prioritas: Sedang</option>
+                    <option value="Tinggi">Prioritas: Tinggi</option>
+                </select>
+                <select id="editStatus" class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4">
+                    <option value="pending">Tertunda</option>
+                    <option value="completed">Selesai</option>
+                    <option value="cancelled">Dibatalkan</option>
+                </select>
+                <div class="flex space-x-3">
+                    <button type="submit" class="flex-1 bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700">
+                        Simpan Perubahan
+                    </button>
+                    <button type="button" onclick="closeEditModal()" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-400">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        let currentUserId = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = getCurrentUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUserId = user.user_id;
+            document.getElementById('userName').textContent = 'Halo, ' + user.full_name;
+            if (user.role === 'admin') {
+                document.getElementById('adminLink').classList.remove('hidden');
+            }
+            renderTasks();
+        });
+
+        // Add Task
+        document.getElementById('addTaskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const data = {
+                task_name: document.getElementById('taskName').value,
+                description: document.getElementById('taskDescription').value,
+                task_date: document.getElementById('taskDate').value,
+                start_time: document.getElementById('startTime').value,
+                end_time: document.getElementById('endTime').value,
+                priority: document.getElementById('taskPriority').value
+            };
+            addTask(currentUserId, data);
+            this.reset();
+            renderTasks();
+        });
+
+        // Edit Task
+        document.getElementById('editTaskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const taskId = parseInt(document.getElementById('editTaskId').value);
+            const data = {
+                task_name: document.getElementById('editTaskName').value,
+                description: document.getElementById('editTaskDescription').value,
+                task_date: document.getElementById('editTaskDate').value,
+                start_time: document.getElementById('editStartTime').value,
+                end_time: document.getElementById('editEndTime').value,
+                priority: document.getElementById('editPriority').value,
+                status: document.getElementById('editStatus').value
+            };
+            updateTask(taskId, data);
+            closeEditModal();
+            renderTasks();
+        });
+
+        function renderTasks() {
+            const tasks = getTasks(currentUserId);
+            const container = document.getElementById('taskList');
+            
+            if (tasks.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Belum ada tugas. Buat tugas pertama Anda di atas!</p>';
+                return;
+            }
+            
+            let html = '';
+            tasks.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            tasks.forEach(task => {
+                const priorityColor = task.priority === 'Tinggi' ? 'bg-red-100 text-red-700' : 
+                                     (task.priority === 'Sedang' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700');
+                const statusText = task.status === 'pending' ? 'Tertunda' : (task.status === 'completed' ? 'Selesai' : 'Dibatalkan');
+                const statusColor = task.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700';
+                
+                html += `
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold">${escapeHtml(task.task_name)}</h3>
+                                <p class="text-gray-600 mt-1">${escapeHtml(task.description || '')}</p>
+                                <div class="flex flex-wrap gap-3 mt-3 text-sm text-gray-500">
+                                    ${task.task_date ? `<span><i class="far fa-calendar"></i> ${task.task_date}</span>` : ''}
+                                    ${task.start_time ? `<span><i class="far fa-clock"></i> ${task.start_time} - ${task.end_time}</span>` : ''}
+                                    <span class="px-2 py-1 rounded-full text-xs ${priorityColor}">${task.priority}</span>
+                                    <span class="px-2 py-1 rounded-full text-xs ${statusColor}">${statusText}</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2 ml-4">
+                                <button onclick="editTask(${task.id})" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteTaskHandler(${task.id})" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function editTask(taskId) {
+            const tasks = getTasks(currentUserId);
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            document.getElementById('editTaskId').value = task.id;
+            document.getElementById('editTaskName').value = task.task_name;
+            document.getElementById('editTaskDescription').value = task.description || '';
+            document.getElementById('editTaskDate').value = task.task_date || '';
+            document.getElementById('editStartTime').value = task.start_time || '';
+            document.getElementById('editEndTime').value = task.end_time || '';
+            document.getElementById('editPriority').value = task.priority;
+            document.getElementById('editStatus').value = task.status;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function deleteTaskHandler(taskId) {
+            if (confirm('Hapus tugas ini?')) {
+                deleteTask(taskId, currentUserId);
+                renderTasks();
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
